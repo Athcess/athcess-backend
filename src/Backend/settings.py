@@ -76,10 +76,15 @@ WSGI_APPLICATION = "Backend.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "athcess-db",
+        "USER": "athcess",
+        "PASSWORD": "athcess1234",
+        "HOST": "localhost",
+        "PORT": 5432,
     }
 }
+
 
 
 # Password validation

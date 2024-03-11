@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16.2
+    container_name: athcess-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: athcess-db
+      POSTGRES_USER: athcess
+      POSTGRES_PASSWORD: athcess1234
