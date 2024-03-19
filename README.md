@@ -40,7 +40,11 @@ Use GitHub Desktop:
    ```sh
    docker-compose -f docker-compose.local.yml up -d
    ```
-
+    ```sh
+    python manage.py makemigrations
+    python manage.py migrate
+    python manage.py assign_roles_permissions  
+    ```
 #### 5. Run the server
 go to the src folder
 ```
