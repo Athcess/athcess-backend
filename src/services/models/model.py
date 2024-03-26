@@ -9,5 +9,5 @@ class Model(models.Model):
     class Meta:
         db_table = "model"
 
-    def __str__(self):
+    def __unicode__(self):
         return str(self.id)
