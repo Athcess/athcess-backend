@@ -8,8 +8,11 @@ class CustomUser(AbstractUser):
         ('scout', 'Scout'),
         ('organization', 'Organization'),
     )
+
+    #id = models.AutoField(unique=True, default=None)
+    username = models.CharField(max_length=50, primary_key=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-    hashed_password = models.CharField(max_length=128)
+    password = models.CharField(max_length=128, blank=True)
 
     groups = models.ManyToManyField(
         'auth.Group',
@@ -29,7 +32,7 @@ class CustomUser(AbstractUser):
         app_label = 'users'
 
     def __str__(self):
-        return self.username
+        return f"User: {self.username}"
 
 
 class Athlete(models.Model):
@@ -46,7 +49,7 @@ class Athlete(models.Model):
         ('RW', 'Right Wing'),
         ('ST', 'Striker'),
     )
-    username = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    username = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     age = models.IntegerField()
     position = models.CharField(choices=POSITION_CHOICES, max_length=20, blank=True, null=True)
     birth_date = models.DateTimeField()
@@ -68,6 +71,7 @@ class Scout(models.Model):
     hometown = models.CharField(max_length=100)
     age = models.IntegerField()
     organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
+    description = models.TextField()
 
     class Meta:
         db_table = "scout"
@@ -86,41 +90,4 @@ class Organization(models.Model):
     def __str__(self):
         return f"Organization: {self.username.username}"
 
-
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-
-
-class CustomGroup(models.Model):
-    GROUP_CHOICES = (
-        ('athlete', _('Athlete')),
-        ('scout', _('Scout')),
-        ('organization', _('Organization')),
-        ('admin', _('Admin')),
-    )
-    name = models.CharField(max_length=50, choices=GROUP_CHOICES, unique=True)
-
-    class Meta:
-        verbose_name = _('Custom Group')
-        verbose_name_plural = _('Custom Groups')
-
-    def __str__(self):
-        return self.get_name_display()
-
-class CustomPermission(models.Model):
-    PERMISSION_CHOICES = (
-        ('athlete_permission', _('Athlete')),
-        ('scout_permission', _('Scout')),
-        ('organization_permission', _('Organization')),
-        ('admin_permission', _('Admin')),
-
-    )
-    name = models.CharField(max_length=50, choices=PERMISSION_CHOICES, unique=True)
-
-    class Meta:
-        verbose_name = _('Custom Permission')
-        verbose_name_plural = _('Custom Permissions')
-
-    def __str__(self):
-        return self.get_name_display()
 

@@ -5,16 +5,15 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from django.utils import timezone
-from django.http import HttpRequest
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
+from rest_framework_simplejwt.tokens import RefreshToken, Token
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['role']
+        fields = ['role', 'username']
 
 
 class AthleteSerializer(serializers.ModelSerializer):
@@ -50,13 +49,15 @@ def signup(request):
             return Response({'error': 'Password not match'}, status=status.HTTP_400_BAD_REQUEST)
         hashed_password = make_password(request.data['confirm_password'])
         auth_serializer = CustomUserSerializer(data={'username': request.data['username'],
-                                                     'last_name': request.data['last_name'],
                                                      'role': request.data['role'],
                                                      'password': hashed_password})
-        if not auth_serializer.is_valid() and s:
+        if not auth_serializer.is_valid():
             return Response(auth_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         auth_serializer.save()
+        User.objects.create(username=request.data['username'], first_name=request.data['first_name']
+                            , last_name=request.data['last_name'], password=hashed_password)
+
         response = auth_serializer.data
 
         if auth_serializer.data['role'] == 'athlete':
@@ -79,13 +80,16 @@ def signup(request):
                 response['athlete'] = athlete_serializer.data
 
         if auth_serializer.data['role'] == 'scout':
-            scout_serializer = ScoutSerializer(data={'username': auth_serializer.data['username'],
-                                                     'birth_date': request.data['birth_date'],
-                                                     'hometown': request.data['hometown'],
-                                                     'age': request.data['age'],
-                                                     'organization': request.data['organization'],
-                                                     }
-                                               )
+            serializer_data = {'username': auth_serializer.data['username'],
+                               'birth_date': request.data['birth_date'],
+                               'hometown': request.data['hometown'],
+                               'age': request.data['age'],
+                               }
+
+            if 'organization' in request.data:
+                serializer_data['organization'] = request.data['organization']
+            scout_serializer = ScoutSerializer(data=serializer_data)
+
             if scout_serializer.is_valid():
                 scout_serializer.save()
                 response['scout'] = scout_serializer.data
@@ -99,38 +103,26 @@ def signup(request):
                 organization_serializer.save()
                 response['organization'] = organization_serializer.data
 
-        temp = {'username': request.data['username'], 'password': request.data['password']}
-
-        request = HttpRequest()
-        request.method = 'POST'
-        request.data = temp
-        print(request.data)
-
-        signin(request)
         return Response(response, status=status.HTTP_201_CREATED)
 
-
 CustomUser = get_user_model()
+
 
 
 @api_view(['POST'])
 def signin(request):
     if request.method == 'POST':
         try:
-            user = CustomUser.objects.get(username=request.data['username'])
+            user = User.objects.get(username=request.data['username'])
         except CustomUser.DoesNotExist:
             return Response({'message': 'User not found'}, status=status.HTTP_400_BAD_REQUEST)
 
         if not user.check_password(request.data['password']):
             return Response({'message': 'Wrong Password'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Authentication successful, generate tokens
-        token, _ = Token.objects.get_or_create(user=user)
+        # Authentication successful, generate JWT tokens
+        refresh = RefreshToken.for_user(user)
 
-        # Set expiration time for the tokens
-        token.created = timezone.now()
-        token.expires = token.created + timezone.timedelta(hours=2)
-        token.save()
-
-        return Response({'message': 'Login Success', 'token': token.key, 'expires': token.expires},
-                        status=status.HTTP_200_OK)  # if expired, force user to login again
+        return Response({'message': 'Login Success', 'access_token': str(refresh.access_token),
+                         'refresh_token': str(refresh)},
+                        status=status.HTTP_200_OK)
