@@ -6,10 +6,12 @@ class CustomUser(AbstractUser):
     ROLE_CHOICES = (
         ('athlete', 'Athlete'),
         ('scout', 'Scout'),
-        ('organization', 'Organization'),
+        ('admin', 'Admin'),
     )
+
+    username = models.CharField(max_length=50, primary_key=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-    hashed_password = models.CharField(max_length=128)
+    password = models.CharField(max_length=128, blank=True)
 
     groups = models.ManyToManyField(
         'auth.Group',
@@ -29,7 +31,7 @@ class CustomUser(AbstractUser):
         app_label = 'users'
 
     def __str__(self):
-        return self.username
+        return f"User: {self.username}"
 
 
 class Athlete(models.Model):
@@ -46,14 +48,14 @@ class Athlete(models.Model):
         ('RW', 'Right Wing'),
         ('ST', 'Striker'),
     )
-    username = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    username = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     age = models.IntegerField()
     position = models.CharField(choices=POSITION_CHOICES, max_length=20, blank=True, null=True)
     birth_date = models.DateTimeField()
     hometown = models.CharField(max_length=100)
     education = models.CharField(max_length=100)
     description = models.TextField()
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
+    club = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
 
     class Meta:
         db_table = "athlete"
@@ -67,7 +69,8 @@ class Scout(models.Model):
     birth_date = models.DateTimeField()
     hometown = models.CharField(max_length=100)
     age = models.IntegerField()
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
+    club = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
+    description = models.TextField()
 
     class Meta:
         db_table = "scout"
@@ -76,9 +79,20 @@ class Scout(models.Model):
         return f"Scout: {self.username.username}"
 
 
-class Organization(models.Model):
+class Admin(models.Model):
     username = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    club_name = models.CharField(max_length=100, unique=True)
+    description = models.TextField()
+
+    class Meta:
+        db_table = "admin"
+
+    def __str__(self):
+        return f"Admin: {self.username.username}"
+
+
+class Organization(models.Model):
+    admin = models.ForeignKey(Admin, on_delete=models.CASCADE, blank=True, null=True)
+    club_name = models.CharField(max_length=100, primary_key=True)
 
     class Meta:
         db_table = "organization"
@@ -86,41 +100,4 @@ class Organization(models.Model):
     def __str__(self):
         return f"Organization: {self.username.username}"
 
-
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-
-
-class CustomGroup(models.Model):
-    GROUP_CHOICES = (
-        ('athlete', _('Athlete')),
-        ('scout', _('Scout')),
-        ('organization', _('Organization')),
-        ('admin', _('Admin')),
-    )
-    name = models.CharField(max_length=50, choices=GROUP_CHOICES, unique=True)
-
-    class Meta:
-        verbose_name = _('Custom Group')
-        verbose_name_plural = _('Custom Groups')
-
-    def __str__(self):
-        return self.get_name_display()
-
-class CustomPermission(models.Model):
-    PERMISSION_CHOICES = (
-        ('athlete_permission', _('Athlete')),
-        ('scout_permission', _('Scout')),
-        ('organization_permission', _('Organization')),
-        ('admin_permission', _('Admin')),
-
-    )
-    name = models.CharField(max_length=50, choices=PERMISSION_CHOICES, unique=True)
-
-    class Meta:
-        verbose_name = _('Custom Permission')
-        verbose_name_plural = _('Custom Permissions')
-
-    def __str__(self):
-        return self.get_name_display()
 
