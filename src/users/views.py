@@ -71,9 +71,9 @@ def signup(request):
                 'description': request.data['description'],
             }
 
-            if 'organization' in request.data:
+            """if 'organization' in request.data:
                 serializer_data['organization'] = request.data['organization']
-
+"""
             athlete_serializer = AthleteSerializer(data=serializer_data)
             if athlete_serializer.is_valid():
                 athlete_serializer.save()
@@ -86,15 +86,15 @@ def signup(request):
                                'age': request.data['age'],
                                }
 
-            if 'organization' in request.data:
-                serializer_data['organization'] = request.data['organization']
+            """if 'organization' in request.data:
+                serializer_data['organization'] = request.data['organization']"""
             scout_serializer = ScoutSerializer(data=serializer_data)
 
             if scout_serializer.is_valid():
                 scout_serializer.save()
                 response['scout'] = scout_serializer.data
 
-        if auth_serializer.data['role'] == 'organization':
+        """if auth_serializer.data['role'] == 'organization':
             organization_serializer = OrganizationSerializer(data={'username': auth_serializer.data['username'],
                                                                    'club_name': request.data['club_name']
                                                                    }
@@ -102,7 +102,7 @@ def signup(request):
             if organization_serializer.is_valid():
                 organization_serializer.save()
                 response['organization'] = organization_serializer.data
-
+"""
         return Response(response, status=status.HTTP_201_CREATED)
 
 CustomUser = get_user_model()

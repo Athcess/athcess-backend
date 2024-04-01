@@ -9,7 +9,6 @@ class CustomUser(AbstractUser):
         ('organization', 'Organization'),
     )
 
-    #id = models.AutoField(unique=True, default=None)
     username = models.CharField(max_length=50, primary_key=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     password = models.CharField(max_length=128, blank=True)
@@ -80,9 +79,20 @@ class Scout(models.Model):
         return f"Scout: {self.username.username}"
 
 
-class Organization(models.Model):
+class Admin(models.Model):
     username = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    club_name = models.CharField(max_length=100, unique=True)
+    description = models.TextField()
+
+    class Meta:
+        db_table = "admin"
+
+    def __str__(self):
+        return f"Admin: {self.username.username}"
+
+
+class Organization(models.Model):
+    admin = models.ForeignKey(Admin, on_delete=models.CASCADE, blank=True, null=True)
+    club_name = models.CharField(max_length=100, primary_key=True)
 
     class Meta:
         db_table = "organization"
