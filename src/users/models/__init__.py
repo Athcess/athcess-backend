@@ -1,2 +1,2 @@
-# from .custom_user import CustomUser
-# from .token import Token, TokenSerializer
+from .custom_user import CustomUser
+
