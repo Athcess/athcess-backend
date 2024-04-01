@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework import serializers
-from .models.custom_user import CustomUser, Athlete, Scout, Organization
+from .models.custom_user import CustomUser, Athlete, Scout, Organization, Admin
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from rest_framework.response import Response
@@ -36,9 +36,9 @@ class ScoutSerializer(serializers.ModelSerializer):
     }
 
 
-class OrganizationSerializer(serializers.ModelSerializer):
+class AthecessSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Organization
+        model = Athlete
         fields = '__all__'
 
 
@@ -71,10 +71,8 @@ def signup(request):
                 'description': request.data['description'],
             }
 
-            """if 'organization' in request.data:
-                serializer_data['organization'] = request.data['organization']
-"""
             athlete_serializer = AthleteSerializer(data=serializer_data)
+
             if athlete_serializer.is_valid():
                 athlete_serializer.save()
                 response['athlete'] = athlete_serializer.data
@@ -86,31 +84,25 @@ def signup(request):
                                'age': request.data['age'],
                                }
 
-            """if 'organization' in request.data:
-                serializer_data['organization'] = request.data['organization']"""
             scout_serializer = ScoutSerializer(data=serializer_data)
 
             if scout_serializer.is_valid():
                 scout_serializer.save()
                 response['scout'] = scout_serializer.data
 
-        """if auth_serializer.data['role'] == 'organization':
-            organization_serializer = OrganizationSerializer(data={'username': auth_serializer.data['username'],
-                                                                   'club_name': request.data['club_name']
-                                                                   }
-                                                             )
-            if organization_serializer.is_valid():
-                organization_serializer.save()
-                response['organization'] = organization_serializer.data
-"""
+        if auth_serializer.data['role'] == 'admin':
+            admin_serializer = AthleteSerializer(data={'username': auth_serializer.data['username']})
+
+            if admin_serializer.is_valid():
+                admin_serializer.save()
+                response['organization'] = admin_serializer.data
+
         return Response(response, status=status.HTTP_201_CREATED)
-
-CustomUser = get_user_model()
-
 
 
 @api_view(['POST'])
 def signin(request):
+    CustomUser = get_user_model()
     if request.method == 'POST':
         try:
             user = User.objects.get(username=request.data['username'])

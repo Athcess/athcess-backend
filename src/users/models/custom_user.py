@@ -6,7 +6,7 @@ class CustomUser(AbstractUser):
     ROLE_CHOICES = (
         ('athlete', 'Athlete'),
         ('scout', 'Scout'),
-        ('organization', 'Organization'),
+        ('admin', 'Admin'),
     )
 
     username = models.CharField(max_length=50, primary_key=True)
@@ -55,7 +55,7 @@ class Athlete(models.Model):
     hometown = models.CharField(max_length=100)
     education = models.CharField(max_length=100)
     description = models.TextField()
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
+    club = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
 
     class Meta:
         db_table = "athlete"
@@ -69,7 +69,7 @@ class Scout(models.Model):
     birth_date = models.DateTimeField()
     hometown = models.CharField(max_length=100)
     age = models.IntegerField()
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
+    club = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
     description = models.TextField()
 
     class Meta:
