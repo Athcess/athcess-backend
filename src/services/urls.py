@@ -1,6 +1,6 @@
 from django.urls import path
-from .apis import *
+from .apis.search import SearchViewSet
 
 urlpatterns = [
-
+    path('search/', SearchViewSet.searched , name='searched')
 ]

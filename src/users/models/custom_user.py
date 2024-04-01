@@ -1,5 +1,5 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser
+# from django.db import models
+# from django.contrib.auth.models import AbstractUser
 
 
 class CustomUser(AbstractUser):
@@ -57,11 +57,11 @@ class Athlete(models.Model):
     description = models.TextField()
     club = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
 
-    class Meta:
-        db_table = "athlete"
+#     class Meta:
+#         db_table = "athlete"
 
-    def __str__(self):
-        return f"Athlete: {self.username.username}"
+#     def __str__(self):
+#         return f"Athlete: {self.username.username}"
 
 
 class Scout(models.Model):
