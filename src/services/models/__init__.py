@@ -7,7 +7,6 @@ from .is_verified import IsVerified
 from .notification import Notification
 from .comment import Comment
 from .post import Post
-from .scout import Scout
 from .event import Event
 from .models import *
 from .chat import Chat
