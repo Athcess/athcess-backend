@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Achievement(models.Model):
     achievement = models.CharField(primary_key=True, max_length=250)
     date = models.DateField()
