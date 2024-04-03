@@ -1,12 +1,14 @@
 from django.db import models
-from .blob_storage import BlobStorage as Blob
+from .blob_storage import BlobStorage
+from users.models.custom_user import CustomUser
+
 
 class HaveProfilePic(models.Model):
-    #User_ID = models.ForeignKey('User', on_delete=models.CASCADE)
-    Object_ID = models.ForeignKey(Blob, on_delete=models.CASCADE)
+    username = models.OneToOneField(CustomUser, primary_key=True, on_delete=models.CASCADE)
+    profile_picture = models.ForeignKey(BlobStorage, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = "HaveProfilePic"
+        db_table = "have_profilepic"
 
     def __str__(self):
         return f"{self.User_ID} has {self.Object_ID}'s profile picture"

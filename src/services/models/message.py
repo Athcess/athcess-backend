@@ -3,7 +3,7 @@ from .chat import Chat
 
 class Message(models.Model):
     message_id = models.CharField(primary_key=True, max_length=100)
-    chat_id = models.ForeignKey(Chat, on_delete=models.CASCADE)
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
     content = models.TextField()
     sender_id = models.CharField(max_length=100)

@@ -1,12 +1,13 @@
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from users.models.custom_user import Organization
 
 class Event(models.Model):
-    Event_ID = models.AutoField(primary_key=True)
-    #Org_Name = models.ForeignKey('Organization', on_delete=models.CASCADE)
-    Content = models.CharField(max_length=200)
-    Time_Post = models.DateTimeField()
-    Like = ArrayField(models.IntegerField(), default=list)
+    event_id = models.AutoField(primary_key=True)
+    club = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    content = models.CharField(max_length=200)
+    created_at = models.DateTimeField()
+    like = ArrayField(models.IntegerField(), default=list)
 
     class Meta:
         db_table = "event"

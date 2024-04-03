@@ -1,9 +1,10 @@
 from django.db import models
+from users.models.custom_user import CustomUser
 
 class Experience(models.Model):
     topic = models.CharField(primary_key=True, max_length=150)
     date = models.DateField()
-    # user_id = models.ForeignKey(User, primary_key=True, max_length=100)
+    username = models.OneToOneField(CustomUser, max_length=100, on_delete=models.CASCADE)
     description = models.TextField()
 
     class Meta:
