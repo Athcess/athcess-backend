@@ -50,7 +50,9 @@ def signup(request):
         hashed_password = make_password(request.data['confirm_password'])
         auth_serializer = CustomUserSerializer(data={'username': request.data['username'],
                                                      'role': request.data['role'],
-                                                     'password': hashed_password})
+                                                     'password': hashed_password,
+                                                     }
+                                               )
         if not auth_serializer.is_valid():
             return Response(auth_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

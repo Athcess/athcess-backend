@@ -12,7 +12,8 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=50, primary_key=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     password = models.CharField(max_length=128, blank=True)
-    tier = models.BooleanField(default=False)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
 
     groups = models.ManyToManyField(
         'auth.Group',
@@ -229,6 +230,7 @@ class Scout(models.Model):
     ]
 
     username = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    tier = models.BooleanField()
     birth_date = models.DateTimeField()
     hometown = models.CharField(max_length=100, choices=HOMWTOWN_CHOICES)
     age = models.IntegerField()

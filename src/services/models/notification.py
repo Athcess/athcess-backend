@@ -1,16 +1,18 @@
 from django.db import models
+from users.models.custom_user import CustomUser
+
+
 
 class Notification(models.Model):
-    Noti_ID = models.AutoField(primary_key=True)
-    #User_ID = models.ForeignKey('User', on_delete=models.CASCADE)
-    content = models.CharField(max_length=200)
+    notification_id = models.AutoField(primary_key=True)
+    username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    content = models.TextField()
     
     TYPE_CHOICES = [
-        ('type1', 'Type 1'),
-        ('type2', 'Type 2'),
-        ('type3', 'Type 3'),
+        ('post', 'Post'),
+        ('friend_request', 'Friend Request'),
     ]
-    Type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+    type = models.CharField(choices=TYPE_CHOICES)
 
     class Meta:
         db_table = "notification"

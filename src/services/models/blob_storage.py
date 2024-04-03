@@ -6,16 +6,20 @@ from users.models.custom_user import CustomUser, Organization
 
 
 class BlobStorage(models.Model):
-    blob_id = models.AutoField(primary_key=True, blank=True, null=True)
-    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
-    verify_id = models.ForeignKey(Verified, on_delete=models.CASCADE, blank=True, null=True)
+    blob_id = models.AutoField(primary_key=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
+    verify = models.ForeignKey(Verified, on_delete=models.CASCADE, blank=True, null=True)
     username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     club_name = models.ForeignKey(Organization, on_delete=models.CASCADE, blank=True, null=True)
-    physical_attribute = models.ForeignKey(PhysicalAttribute, on_delete= models.CASCADE, blank=True, null=True)
-    type = models.CharField(max_length=30, choices=[('type1', 'Type 1'), ('type2', 'Type 2'), ('type3', 'Type 3')])
-    description = models.CharField(max_length=30)
-    url = models.CharField(max_length=100)
-    skill_type = models.CharField(max_length=30, choices=[('skill1', 'Skill 1'), ('skill2', 'Skill 2'), ('skill3', 'Skill 3')])
+    physical_attribute = models.ForeignKey(PhysicalAttribute, on_delete=models.CASCADE, blank=True, null=True)
+    content_type = models.CharField(max_length=30)
+    description = models.CharField(max_length=30,blank=True, null=True)
+    url = models.TextField(max_length=250)
+    file_name = models.CharField(max_length=100)
+    status = models.CharField(max_length=30, choices=[('pending', 'Pending'), ('uploaded', 'Uploaded'), ('failed', 'Failed')])
+    file_size = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    skill_type = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         db_table = "blob_storage"

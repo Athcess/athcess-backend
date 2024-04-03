@@ -1,8 +1,10 @@
 from django.db import models
+from users.models.custom_user import CustomUser
+
 
 class Contact(models.Model):
     email = models.CharField(primary_key=True, max_length=50)
-    # user_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     phone = models.CharField(max_length=10)
 
     class Meta:

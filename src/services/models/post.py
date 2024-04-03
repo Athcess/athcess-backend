@@ -1,13 +1,14 @@
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from users.models.custom_user import CustomUser
+
 
 class Post(models.Model):
-    Post_ID = models.AutoField(primary_key=True)
-    #User_ID = models.ForeignKey('User', on_delete=models.CASCADE)
-    Date_Post = models.DateField()
-    Time_Post = models.TimeField()
-    Description = models.CharField(max_length=200)
-    Like = ArrayField(models.IntegerField(), default=list)
+    post_id = models.AutoField(primary_key=True)
+    username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    created_at = models.DateTimeField()
+    description = models.TextField()
+    like = ArrayField(models.IntegerField(), default=list)
 
     class Meta:
         db_table = "post"

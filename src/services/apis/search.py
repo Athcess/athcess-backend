@@ -3,10 +3,9 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.db.models import Q
 from ..models.physical_attribute import PhysicalAttribute
-from ..models.user import User
 
 
-# class SearchViewSet(viewsets.Viewset) :
+# class SearchViewSet(viewsets.Viewset):
 #     def search(self, request):
 #         if request.method == 'POST' :
 #             searched = request.POST['searched']

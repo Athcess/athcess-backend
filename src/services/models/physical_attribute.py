@@ -1,8 +1,10 @@
 from django.db import models
+from users.models.custom_user import CustomUser
+
 
 class PhysicalAttribute(models.Model):
     date = models.DateTimeField(primary_key=True)
-    # user_id = models.ForeignKey(User, primary_key=True, on_delete=models.CASCADE)
+    username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     height = models.IntegerField()
     speed = models.IntegerField()
     fat_mass = models.DecimalField(max_digits= 4, decimal_places= 2)
