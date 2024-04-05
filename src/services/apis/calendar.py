@@ -5,7 +5,6 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.db.models import Q
-from ..models.user import User
 from ..models.post import Post
 from ..models.event import Event
 from django.utils import timezone
@@ -75,6 +74,7 @@ def generate_mock_events(request):
         created_events = []
         for event_data in events_data:
             event = Event.objects.create(
+                club=event_data.club,
                 content=event_data.content,
                 created_at=event_data.created_at,
                 like=event_data.like
