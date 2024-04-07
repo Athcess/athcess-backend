@@ -148,9 +148,10 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+from Backend.config import azure_account_name, azure_account_key
 AZURE_CONFIG = {
-    'account_name': '',
-    'account_key': ''
+    'account_name': azure_account_name,
+    'account_key': azure_account_key,
 }
 
 

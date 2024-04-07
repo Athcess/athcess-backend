@@ -2,6 +2,7 @@ from rest_framework import viewsets, status, permissions, serializers
 from rest_framework.response import Response
 from azure.storage.blob import BlobServiceClient, generate_blob_sas, BlobSasPermissions
 from ..models.blob_storage import BlobStorage
+from Backend.config import azure_account_name, azure_account_key
 from django.conf import settings
 from datetime import datetime, timedelta
 import uuid
@@ -26,8 +27,8 @@ class BlobSerializer(serializers.ModelSerializer):
 
 class AzureBlobClient:
     def __init__(self, account_name, account_key):
-        self.account_name = ""
-        self.account_key = ""
+        self.account_name = azure_account_name
+        self.account_key = azure_account_key
         # Initialize BlobServiceClient
         self.blob_service_client = BlobServiceClient(account_url=AZURE_BLOB_URL.format(account_name=self.account_name),
                                                      credential=self.account_key)

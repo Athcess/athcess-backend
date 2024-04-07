@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework import serializers
-from .models.custom_user import CustomUser, Athlete, Scout, Organization, Admin
+from .models.custom_user import CustomUser, Athlete, Scout, Admin
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from rest_framework.response import Response
@@ -29,16 +29,16 @@ class AthleteSerializer(serializers.ModelSerializer):
 class ScoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Scout
-        fields = '__all__'
+        fields = ['username', 'birth_date', 'hometown', 'age', 'tier']
 
     extra_kwargs = {
         'organization': {'required': False}
     }
 
 
-class AthecessSerializer(serializers.ModelSerializer):
+class AdminSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Athlete
+        model = Admin
         fields = '__all__'
 
 
@@ -84,6 +84,7 @@ def signup(request):
                                'birth_date': request.data['birth_date'],
                                'hometown': request.data['hometown'],
                                'age': request.data['age'],
+                               'tier': request.data['tier'],
                                }
 
             scout_serializer = ScoutSerializer(data=serializer_data)
@@ -93,7 +94,11 @@ def signup(request):
                 response['scout'] = scout_serializer.data
 
         if auth_serializer.data['role'] == 'admin':
-            admin_serializer = AthleteSerializer(data={'username': auth_serializer.data['username']})
+            admin_serializer = AdminSerializer(data={
+                                                        'username': auth_serializer.data['username'],
+                                                        'description': request.data['description'],
+                                                     }
+                                               )
 
             if admin_serializer.is_valid():
                 admin_serializer.save()
