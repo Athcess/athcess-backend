@@ -43,7 +43,6 @@ Use GitHub Desktop:
     ```sh
     python manage.py makemigrations
     python manage.py migrate
-    python manage.py assign_roles_permissions  
     ```
 #### 5. Run the server
 go to the src folder
