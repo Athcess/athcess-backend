@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework import serializers
-from .models.custom_user import CustomUser, Athlete, Scout, Admin
+from .models.custom_user import CustomUser, Athlete, Scout, Admin_organization
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from rest_framework.response import Response
@@ -38,7 +38,7 @@ class ScoutSerializer(serializers.ModelSerializer):
 
 class AdminSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Admin
+        model = Admin_organization
         fields = '__all__'
 
 
