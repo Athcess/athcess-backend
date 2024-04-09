@@ -8,6 +8,7 @@ class Post(models.Model):
     username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField()
     description = models.TextField()
+    has_attachment = models.BooleanField()
     like = ArrayField(models.IntegerField(), default=list)
 
     class Meta:
