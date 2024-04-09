@@ -1,4 +1,4 @@
-from users.models.custom_user import CustomUser, Athlete, Scout, Admin, Organization
+from users.models.custom_user import CustomUser, Athlete, Scout, Admin_organization, Organization
 from ..models.post import Post
 from rest_framework import viewsets, status, permissions, serializers
 from rest_framework.response import Response
