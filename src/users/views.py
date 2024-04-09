@@ -70,7 +70,7 @@ def signup(request):
                 'birth_date': request.data['birth_date'],
                 'hometown': request.data['hometown'],
                 'education': request.data['education'],
-                'description': request.data['description'],
+                'description': request.data['description'], #no this field in signup
             }
 
             athlete_serializer = AthleteSerializer(data=serializer_data)
