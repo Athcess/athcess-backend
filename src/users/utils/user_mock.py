@@ -1,22 +1,23 @@
 from faker import Faker
 from django.contrib.auth import get_user_model
 from datetime import datetime, timedelta
+from users.models.custom_user import CustomUser, Athlete, Scout, Admin_organization, Organization
 
 fake = Faker()
 User = get_user_model()
 
 def mock_custom_users(num_users=10):
-    users = []
+    users_data = []
     for _ in range(num_users):
-        user = User.objects.create_user(
-            username=fake.user_name(),
-            password=fake.password(),
-            first_name=fake.first_name(),
-            last_name=fake.last_name(),
-            role=fake.random_element(elements=[choice[0] for choice in CustomUser.ROLE_CHOICES])
-        )
-        users.append(user)
-    return users
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'first_name': fake.first_name(),
+            'last_name': fake.last_name(),
+            'role': fake.random_element(elements=[choice[0] for choice in CustomUser.ROLE_CHOICES])
+        }
+        users_data.append(user_data)
+    return users_data
 
 def mock_athletes(num_athletes=10):
     athletes = []
@@ -50,19 +51,22 @@ def mock_scouts(num_scouts=5):
 def mock_admins(num_admins=2):
     admins = []
     for _ in range(num_admins):
-        admin = Admin.objects.create(
-            username=fake.random_element(elements=User.objects.filter(role='admin')),
+        admin = Admin_organization.objects.create(
+            username=fake.user_name(),
+            password=fake.password(),
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
+            role='admin',  # Set the role to 'admin'
             description=fake.text(max_nb_chars=200)
         )
         admins.append(admin)
     return admins
-
 def mock_organizations(num_orgs=5):
     orgs = []
     for _ in range(num_orgs):
-        org = Organization.objects.create(
-            admin=fake.random_element(elements=Admin.objects.all()),
-            club_name=fake.company()
-        )
-        orgs.append(org)
+        org_data = {
+            'admin': fake.random_element(elements=Admin_organization.objects.all()).id,
+            'club_name': fake.company()
+        }
+        orgs.append(org_data)
     return orgs
