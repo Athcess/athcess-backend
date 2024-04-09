@@ -7,6 +7,10 @@ class Event(models.Model):
     club = models.ForeignKey(Organization, on_delete=models.CASCADE)
     content = models.CharField(max_length=200)
     created_at = models.DateTimeField()
+    date_start = models.DateField()
+    date_end = models.DateField()
+    time_start = models.TimeField()
+    time_end = models.TimeField()
     like = ArrayField(models.IntegerField(), default=list)
 
     class Meta:
