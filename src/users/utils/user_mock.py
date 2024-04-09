@@ -23,7 +23,6 @@ def mock_athletes(num_athletes=10):
     athletes = []
     for _ in range(num_athletes):
         athlete = Athlete.objects.create(
-            username=fake.random_element(elements=User.objects.filter(role='athlete')),
             age=fake.random_int(min=18, max=40),
             position=fake.random_element(elements=[choice[0] for choice in Athlete.POSITION_CHOICES]),
             birth_date=fake.date_time_between(start_date="-30y", end_date="-18y"),
@@ -37,8 +36,15 @@ def mock_athletes(num_athletes=10):
 def mock_scouts(num_scouts=5):
     scouts = []
     for _ in range(num_scouts):
+        scout_user = CustomUser.objects.create(
+            username=fake.user_name(),
+            password=fake.password(),
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
+            role='scout'  # Set the role to 'scout'
+        )
         scout = Scout.objects.create(
-            username=fake.random_element(elements=User.objects.filter(role='scout')),
+            username=scout_user,
             tier=fake.boolean(),
             birth_date=fake.date_time_between(start_date="-50y", end_date="-30y"),
             hometown=fake.random_element(elements=[choice[0] for choice in Scout.HOMWTOWN_CHOICES]),
@@ -47,6 +53,7 @@ def mock_scouts(num_scouts=5):
         )
         scouts.append(scout)
     return scouts
+
 
 def mock_admins(num_admins=2):
     admins = []
