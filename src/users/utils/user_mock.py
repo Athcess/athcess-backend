@@ -22,7 +22,15 @@ def mock_custom_users(num_users=10):
 def mock_athletes(num_athletes=10):
     athletes = []
     for _ in range(num_athletes):
+        athlete_user = CustomUser.objects.create(
+            username=fake.user_name(),
+            password=fake.password(),
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
+            role='athlete'  # Set the role to 'athlete'
+        )
         athlete = Athlete.objects.create(
+            username=athlete_user,
             age=fake.random_int(min=18, max=40),
             position=fake.random_element(elements=[choice[0] for choice in Athlete.POSITION_CHOICES]),
             birth_date=fake.date_time_between(start_date="-30y", end_date="-18y"),
