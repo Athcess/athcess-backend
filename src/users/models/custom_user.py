@@ -244,7 +244,7 @@ class Scout(models.Model):
         return f"Scout: {self.username.username}"
 
 
-class Admin(models.Model):
+class Admin_organization(models.Model):
     username = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     description = models.TextField()
 
@@ -256,7 +256,7 @@ class Admin(models.Model):
 
 
 class Organization(models.Model):
-    admin = models.ForeignKey(Admin, on_delete=models.CASCADE, blank=True, null=True)
+    admin = models.ForeignKey(Admin_organization, on_delete=models.CASCADE, blank=True, null=True)
     club_name = models.CharField(max_length=100, primary_key=True)
 
     class Meta:
