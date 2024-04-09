@@ -1,0 +1,32 @@
+# Ignore system files
+*.pyc
+__pycache__/
+*.db
+*.sqlite3
+*.log
+*.pot
+*.po
+*.mo
+
+# Ignore environment-specific settings
+.env
+.env.*
+
+# Ignore local development settings
+local_settings.py
+
+# Ignore static and media files
+/staticfiles/
+/media/
+
+# Ignore IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+
+# Ignore dependency directories
+venv/
+env/
+node_modules/
