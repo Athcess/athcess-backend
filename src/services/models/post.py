@@ -9,11 +9,29 @@ class Post(models.Model):
     created_at = models.DateTimeField()
     description = models.TextField()
     has_attachment = models.BooleanField()
-    like = ArrayField(models.IntegerField(), default=list)
-    highlight = models.BooleanField()
+    likes = models.TextField(default='')  # Field to store a comma-separated list of usernames
+    highlight = models.BooleanField(default=False)
+
+    def like(self, username):
+        """
+        Add a username to the list of likes for this post.
+        """
+        if username not in self.likes.split(','):
+            if self.likes:
+                self.likes += f',{username}'
+            else:
+                self.likes = username
+            self.save()
+            return {'message': 'Post liked successfully'}
+
+        updated_likes = [name for name in self.likes.split(',') if name != username]
+        self.likes = ','.join(updated_likes)
+        self.save()
+        return {'message': 'Post unliked successfully'}
+
 
     class Meta:
         db_table = "post"
 
     def __str__(self):
-        return f"Post ID: {self.Post_ID}"
+        return f"Post ID: {self.post_id}"
