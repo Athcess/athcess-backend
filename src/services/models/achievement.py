@@ -2,8 +2,9 @@ from django.db import models
 from users.models.custom_user import CustomUser
 
 class Achievement(models.Model):
-    achievement = models.CharField(unique=True, max_length=250)
-    date = models.DateField(primary_key=True)
+    achievement = models.TextField(unique=True, max_length=250)
+    create_at = models.DateField(primary_key=True)
+    date = models.DateField(blank=True, null=True)
     username = models.OneToOneField(CustomUser, max_length=100, on_delete=models.CASCADE)
 
     class Meta:
