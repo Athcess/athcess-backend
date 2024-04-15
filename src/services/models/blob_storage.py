@@ -8,6 +8,7 @@ from users.models.custom_user import CustomUser, Organization
 class BlobStorage(models.Model):
     blob_id = models.AutoField(primary_key=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
+    is_profile_picture = models.BooleanField(default=False)
     verify = models.ForeignKey(Verified, on_delete=models.CASCADE, blank=True, null=True)
     username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     club_name = models.ForeignKey(Organization, on_delete=models.CASCADE, blank=True, null=True)
