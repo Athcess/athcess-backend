@@ -92,23 +92,26 @@ class UserViewSet(viewsets.ModelViewSet):
             if role == 'scout':
                 tier = Scout.objects.get(username=username).tier
 
+            own = request.user.username == kwargs.get('pk')
+
             # physical attribute
-            try:
-                physical_attributes = PhysicalAttribute.objects.get(username=username)
-                response['physical_attribute'] = [
-                    {
-                        'height': physical_attribute.height,
-                        'weight': physical_attribute.weight,
-                        'fat_mass': physical_attribute.fat_mass,
-                        'muscle_mass': physical_attribute.muscle_mass,
-                        'run': physical_attribute.run if tier else None,
-                        'push_up': physical_attribute.push_up if tier else None,
-                        'sit_up': physical_attribute.sit_up if tier else None
-                    }
-                    for physical_attribute in physical_attributes
-                ]
-            except PhysicalAttribute.DoesNotExist:
-                response['physical_attribute'] = None
+            if role is 'athlete':
+                try:
+                    physical_attributes = PhysicalAttribute.objects.get(username=username)
+                    response['physical_attribute'] = [
+                        {
+                            'height': physical_attribute.height,
+                            'weight': physical_attribute.weight,
+                            'fat_mass': physical_attribute.fat_mass,
+                            'muscle_mass': physical_attribute.muscle_mass,
+                            'run': physical_attribute.run if tier else None,
+                            'push_up': physical_attribute.push_up if tier or own else None,
+                            'sit_up': physical_attribute.sit_up if tier or own else None
+                        }
+                        for physical_attribute in physical_attributes
+                    ]
+                except PhysicalAttribute.DoesNotExist:
+                    response['physical_attribute'] = None
 
             return Response(response)
 
@@ -137,7 +140,6 @@ class UserViewSet(viewsets.ModelViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
-
 
         return Response(response)
 
