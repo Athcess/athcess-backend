@@ -7,7 +7,7 @@ from django.utils import timezone
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['username', 'created_at', 'description', 'has_attachment']
+        fields = ['username', 'created_at', 'description', 'has_attachment', 'highlight']
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -21,7 +21,8 @@ class PostViewSet(viewsets.ModelViewSet):
                                             'username': request.user,
                                             'created_at': create_at,
                                             'description': request.data['description'],
-                                            'has_attachment': request.data['has_attachment']
+                                            'has_attachment': request.data['has_attachment'],
+                                            'highlight': request.data['highlight']
                                           })
 
         if not serializer.is_valid():
