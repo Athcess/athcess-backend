@@ -109,11 +109,11 @@ def signup(request):
 
 @api_view(['POST'])
 def signin(request):
-    CustomUser = get_user_model()
+    C_USER = get_user_model()
     if request.method == 'POST':
         try:
             user = User.objects.get(username=request.data['username'])
-        except CustomUser.DoesNotExist:
+        except C_USER.DoesNotExist:
             return Response({'message': 'User not found'}, status=status.HTTP_400_BAD_REQUEST)
 
         if not user.check_password(request.data['password']):
@@ -122,6 +122,19 @@ def signin(request):
         # Authentication successful, generate JWT tokens
         refresh = RefreshToken.for_user(user)
 
+        role = CustomUser.objects.get(username=request.data['username']).role
+
+        user = {'athlete': Athlete, 'scout': Scout, 'admin': Admin_organization}.get(role).objects.get(username=request.data['username'])
+
+        # Extract serializable data from the user object
+        serializable_data = {}
+        for field in user._meta.fields:
+            serializable_data[field.name] = getattr(user, field.name)
+            if field.name == 'birth_date' or field.name == 'username':
+                serializable_data[field.name] = str(getattr(user, field.name))
+
+        print(serializable_data)
+
         return Response({'message': 'Login Success', 'access_token': str(refresh.access_token),
-                         'refresh_token': str(refresh)},
-                        status=status.HTTP_200_OK)
+                        'refresh_token': str(refresh), 'data': [serializable_data]}, status=status.HTTP_200_OK,
+                        )
