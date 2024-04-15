@@ -10,6 +10,7 @@ class Post(models.Model):
     description = models.TextField()
     has_attachment = models.BooleanField()
     like = ArrayField(models.IntegerField(), default=list)
+    highlight = models.BooleanField()
 
     class Meta:
         db_table = "post"

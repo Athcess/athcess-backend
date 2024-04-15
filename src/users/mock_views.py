@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from .utils.user_mock import mock_custom_users,mock_athletes, mock_scouts, mock_admins, mock_organizations
 from faker import Faker
 
+
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
@@ -54,6 +55,7 @@ def mock_custom_user(request):
         serializer = CustomUserSerializer(data=users, many=True)
         if serializer.is_valid():
             serializer.save()
+            User.objects.create()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
