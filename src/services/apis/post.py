@@ -18,7 +18,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         create_at = timezone.now()
         serializer = PostSerializer(data={
-                                            'username': request.user,
+                                            'username': request.user.username,
                                             'created_at': create_at,
                                             'description': request.data['description'],
                                             'has_attachment': request.data['has_attachment'],
