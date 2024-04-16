@@ -12,10 +12,15 @@ def create_calendar(year, month):
     return days_data
 
 def append_event(calendar_data, day, event_data):
-    day = int(day)  # Ensure day is an integer
+    day = int(day)
     for day_data in calendar_data:
         for event in event_data:
             if day_data['day'] == day:
-                day_data['events'].append(event.content)
-                break
+                event_data_list = {
+                    'id': event.event_id,
+                    'content': event.content,
+                    'created_at': event.created_at,
+                    'like': event.like
+                }
+                day_data['events'].append(event_data_list)
     return calendar_data
