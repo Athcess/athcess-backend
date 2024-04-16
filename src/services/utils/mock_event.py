@@ -8,7 +8,8 @@ fake = Faker()
 def mock_event_data(num_events=10):
     events = []
     for _ in range(num_events):
-        club = fake.company()
+        
+        club = fake.random_element(elements=[choice[0] for choice in Organization.ROLE_CHOICES])
         content = fake.text(max_nb_chars=200)
         time_post = fake.date_time_between(start_date="-1y", end_date="now")
         date_start = fake.date_between(start_date=timezone.now().date(), end_date="+1y")
