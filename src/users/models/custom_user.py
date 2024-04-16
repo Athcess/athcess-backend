@@ -263,6 +263,4 @@ class Organization(models.Model):
         db_table = "organization"
 
     def __str__(self):
-        return f"Organization: {self.username.username}"
-
-
+        return f"Organization: {self.club_name}"
