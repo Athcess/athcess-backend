@@ -9,22 +9,32 @@ from ..models.post import Post
 from ..models.event import Event
 from django.utils import timezone
 from ..utils.mock_event import mock_event_data
+from ..utils.calendar_utils import create_calendar,append_event
+from datetime import datetime
+from django.http import JsonResponse
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = "__all__"
+        fields = '__all__'
 
-@api_view(['GET'])
-def get_event(request):
-    if request.method == 'GET':
-        events = Event.objects.all() 
-        serializer = EventSerializer(events, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
 
-@api_view(['POST'])
-def create_event(request):
-    if request.method == 'POST':
+    @action(detail=False, methods=['get'], url_path='get-calendar')
+    def get(self, request, *args, **kwargs):
+        now = datetime.now()
+        year = now.year
+        month = now.month
+        day = now.day
+        calendar_data = create_calendar(year, month)
+        events = Event.objects.all()
+        calendar_data = append_event(calendar_data, day, events)
+        return Response({"calendar": calendar_data}, status=status.HTTP_200_OK)
+
+
+    def create(self, request, *args, **kwargs):
         data = {
             'event_id': request.data.get('event_id'),
             'club': request.data.get('org_name'),
@@ -37,38 +47,22 @@ def create_event(request):
             return Response(event_serializer.data, status=status.HTTP_201_CREATED)
         return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['DELETE'])
-def delete_event(request):
-    if request.method == 'DELETE':
-        event_id = request.data.get('event_id')
-        if event_id:
-            try:
-                event = Event.objects.get(id=event_id)
-                event.delete()
-                return Response({'message': 'Event deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
-            except Event.DoesNotExist:
-                return Response({'message': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
-        return Response({'message': 'Event ID not provided'}, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['PUT'])
-def update_event(request):
-    if request.method == 'PUT':
-        event_id = request.data.get('event_id')
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
         updated_content = request.data.get('updated_content')
-        if event_id and updated_content:
-            try:
-                event = Event.objects.get(id=event_id)
-                event.content = updated_content
-                event.save()
-                serializer = EventSerializer(event)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            except Event.DoesNotExist:
-                return Response({'message': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
-        return Response({'message': 'Event ID or Updated Content not provided'}, status=status.HTTP_400_BAD_REQUEST)
+        if updated_content:
+            instance.content = updated_content
+            instance.save()
+            serializer = EventSerializer(instance)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'message': 'Updated Content not provided'}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-def generate_mock_events(request):
-    if request.method == 'POST':
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.delete()
+        return Response({'message': 'Event deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+    def generate_mock_events(self, request, *args, **kwargs):
         num_events = request.data.get('num_events', 10) 
         events_data = mock_event_data(num_events=num_events)
         created_events = []
