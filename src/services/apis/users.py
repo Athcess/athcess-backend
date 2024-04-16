@@ -95,7 +95,7 @@ class UserViewSet(viewsets.ModelViewSet):
             own = request.user.username == kwargs.get('pk')
 
             # physical attribute
-            if role is 'athlete':
+            if role == 'athlete':
                 try:
                     physical_attributes = PhysicalAttribute.objects.get(username=username)
                     response['physical_attribute'] = [
