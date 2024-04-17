@@ -1,0 +1,18 @@
+[
+  {
+    "model": "users.customuser",
+    "pk": 1,
+    "fields": {
+      "username": "punnshelby",
+      "role": "athlete",
+      "password": "",
+      "email": "",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_superuser": false,
+      "is_active": true,
+      "date_joined": "2023-06-19T10:00:00Z"
+    }
+  }
+]

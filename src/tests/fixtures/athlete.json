@@ -1,0 +1,15 @@
+[
+  {
+    "model": "users.athlete",
+    "pk": "punnshelby",
+    "fields": {
+      "age": 21,
+      "position": "CM",
+      "birth_date": "2002-10-12T00:00:00Z",
+      "hometown": "Bangkok",
+      "education": "B. Eng",
+      "description": "hi",
+      "club": null
+    }
+  }
+]
