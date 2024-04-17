@@ -76,3 +76,16 @@ class EventViewSet(viewsets.ModelViewSet):
         
         return Response({'message': f'{num_events} mock events created successfully'}, status=status.HTTP_201_CREATED)
 
+    @action(detail=False, methods=['get'], url_path='calendar/')
+    def get_event_by_organization(self, request):
+        org_name = request.query_params.get('org_name')
+        if not org_name:
+            return Response({'message': 'Organization name not provided in the query'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        events = Event.objects.filter(club=org_name)
+        if not events:
+            return Response({'message': 'No events found for the organization'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serialized_events = EventSerializer(events, many=True).data
+        return Response({'events': serialized_events}, status=status.HTTP_200_OK)
+
