@@ -1,7 +1,4 @@
 from rest_framework.decorators import api_view
-from rest_framework import viewsets
-from rest_framework import status
-from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.db.models import Q
@@ -12,6 +9,7 @@ from ..utils.mock_event import mock_event_data
 from ..utils.calendar_utils import create_calendar,append_event
 from datetime import datetime
 from django.http import JsonResponse
+from rest_framework import viewsets, status, permissions, serializers
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,6 +19,7 @@ class EventSerializer(serializers.ModelSerializer):
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=False, methods=['get'], url_path='get-calendar')
     def get(self, request, *args, **kwargs):
@@ -76,3 +75,4 @@ class EventViewSet(viewsets.ModelViewSet):
             created_events.append(event)
         
         return Response({'message': f'{num_events} mock events created successfully'}, status=status.HTTP_201_CREATED)
+
