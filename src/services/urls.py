@@ -20,6 +20,7 @@ urlpatterns = [
     path('calendar/<int:pk>/', EventViewSet.as_view({'put': 'update', 'delete': 'destroy'}), name='calendar-detail'),
     path('calendar/mock/', EventViewSet.as_view({'post': 'generate_mock_events'}), name='calendar-mock'),
     path('calendar/byname/', EventViewSet.as_view({'get': 'get_event_by_organization'}), name='calendar-org'),
+    path('calendar/upcoming/', EventViewSet.as_view({'get': 'get_upcoming_events'}), name='calendar-upcoming'),
     path('notification/', NotificationViewSet.as_view({'get': 'list'}), name='notification'),
     path('notification/<int:pk>/', NotificationViewSet.as_view({'put': 'update'}), name='notification-detail'),
     path('notification/create/', NotificationViewSet.as_view({'post': 'create'}), name='notification-create'),
