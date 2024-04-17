@@ -5,6 +5,7 @@ from .apis.post import PostViewSet
 from .apis.users import UserViewSet
 from .apis.like import LikeViewSet
 from .apis.calendar import EventViewSet
+from .apis.notification import NotificationViewSet
 
 urlpatterns = [
     path('search/', SearchViewSet.searched , name='searched'),
@@ -18,4 +19,7 @@ urlpatterns = [
     path('calendar/', EventViewSet.as_view({'post': 'create'}), name='calendar'),
     path('calendar/<int:pk>/', EventViewSet.as_view({'put': 'update', 'delete': 'destroy'}), name='calendar-detail'),
     path('calendar/mock/', EventViewSet.as_view({'post': 'generate_mock_events'}), name='calendar-mock'),
+    path('notification/', NotificationViewSet.as_view({'get': 'list'}), name='notification'),
+    path('notification/<int:pk>/', NotificationViewSet.as_view({'put': 'update'}), name='notification-detail'),
+    path('notification/create/', NotificationViewSet.as_view({'post': 'create'}), name='notification-create'),
 ]
