@@ -6,6 +6,7 @@ from .apis.users import UserViewSet
 from .apis.like import LikeViewSet
 from .apis.calendar import EventViewSet
 from .apis.notification import NotificationViewSet
+from .apis.organization import OrganizationViewSet
 from .apis.achievement import AchievementViewSets
 
 urlpatterns = [
@@ -23,6 +24,8 @@ urlpatterns = [
     path('notification/', NotificationViewSet.as_view({'get': 'list'}), name='notification'),
     path('notification/<int:pk>/', NotificationViewSet.as_view({'put': 'update'}), name='notification-detail'),
     path('notification/create/', NotificationViewSet.as_view({'post': 'create'}), name='notification-create'),
+    path('organization/', OrganizationViewSet.as_view({'get': 'list'}), name='organization'),
+    path('organization/<str:org_name>/', OrganizationViewSet.as_view({'get': 'get_by_name'}), name='organization-by-name'),
     path('notification/delete/', NotificationViewSet.as_view({'delete': 'destroy'}), name='notification-delete'),
     path('achievement/', AchievementViewSets.as_view({'post': 'create', 'get': 'list'}), name='achievement'),
     path('achievement/<int:pk>/', AchievementViewSets.as_view({'get': 'retrieve', }), name='achievement-detail'),
