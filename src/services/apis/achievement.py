@@ -3,6 +3,7 @@ from ..models.achievement import Achievement
 from rest_framework import viewsets, status, permissions, serializers
 from rest_framework.response import Response
 from django.utils import timezone
+from ..utils.achievement import mock_achievement_data
 
 class AchievementSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,7 +11,7 @@ class AchievementSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PostViewSet(viewsets.ModelViewSet):
+class AchievementViewSets(viewsets.ModelViewSet):
     queryset = Achievement.objects.all()
     serializer_class = AchievementSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -47,3 +48,15 @@ class PostViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response(serializer.data)
+
+    def mock_achievements(self, num_achievements):
+        achievements = mock_achievement_data(num_achievements)
+        for achievement in achievements:
+            serializer = AchievementSerializer(data=achievement)
+            if not serializer.is_valid():
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+
+    
