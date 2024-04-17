@@ -54,6 +54,7 @@ class AuthUserSerializer(serializers.ModelSerializer):
         model = AuthUser
         fields = ['username', 'password', 'first_name', 'last_name']
 
+fake = Faker()
 @api_view(['POST'])
 def mock_custom_user(request):
     if request.method == 'POST':
