@@ -96,3 +96,12 @@ class EventViewSet(viewsets.ModelViewSet):
             return Response({'message': 'No event found with the given id'}, status=status.HTTP_404_NOT_FOUND)
         return Response({'event': event}, status=status.HTTP_200_OK)
 
+    @action(detail=False, methods=['get'], url_path='calendar/upcoming/')
+    def get_upcoming_events(self, request):
+        now = datetime.now()
+        events = Event.objects.filter(created_at__month=now.month)
+        if not events:
+            return Response({'message': 'No events found for the month'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serialized_events = EventSerializer(events, many=True).data
+        return Response({'events': serialized_events}, status=status.HTTP_200_OK)
