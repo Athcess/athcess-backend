@@ -93,3 +93,10 @@ class EventViewSet(viewsets.ModelViewSet):
         serialized_events = EventSerializer(events, many=True).data
         return Response({'events': serialized_events}, status=status.HTTP_200_OK)
 
+    def get_event_by_id(self, request, *args, **kwargs):
+        event_id = request.data.get('event_id')
+        event = Event.objects.filter(event_id=event_id)
+        if not event:
+            return Response({'message': 'No event found with the given id'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'event': event}, status=status.HTTP_200_OK)
+
