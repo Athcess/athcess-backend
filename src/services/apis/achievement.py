@@ -22,7 +22,9 @@ class AchievementViewSets(viewsets.ModelViewSet):
                                             'username': request.user,
                                             'created_at': create_at,
                                             'date': request.data['date'],
-                                            'achievement': request.data['achievement'],
+                                            'topic': request.data['topic'],
+                                            'sub_topic': request.data['sub_topic'],
+                                            'description': request.data['description'],
                                           })
 
         if not serializer.is_valid():

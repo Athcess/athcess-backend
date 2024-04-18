@@ -4,28 +4,31 @@ from rest_framework import viewsets, status, permissions, serializers
 from rest_framework.response import Response
 from django.utils import timezone
 
-class AchievementSerializer(serializers.ModelSerializer):
+class ExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Experience
         fields = '__all__'
 
 
-class PostViewSet(viewsets.ModelViewSet):
+class ExperienceViewSet(viewsets.ModelViewSet):
     queryset = Experience.objects.all()
-    serializer_class = AchievementSerializer
+    serializer_class = ExperienceSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         create_at = timezone.now()
-        serializer = AchievementSerializer(data={
+        serializer = ExperienceSerializer(data={
+                                            'topic': request.data['topic'],
+                                            'start_date': request.data['start_date'],
+                                            'end_date': request.data['end_date'],
                                             'username': request.user,
-                                            'created_at': create_at,
-                                            'date': request.data['date'],
-                                            'achievement': request.data['achievement'],
+                                            'description': request.data['description'],
+                                            'create_at': create_at
                                           })
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)

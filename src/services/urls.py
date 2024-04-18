@@ -8,6 +8,7 @@ from .apis.calendar import EventViewSet
 from .apis.notification import NotificationViewSet
 from .apis.organization import OrganizationViewSet
 from .apis.achievement import AchievementViewSets
+from .apis.experience import ExperienceViewSet
 
 urlpatterns = [
     path('search/', SearchViewSet.searched , name='searched'),
@@ -26,8 +27,10 @@ urlpatterns = [
     path('notification/create/', NotificationViewSet.as_view({'post': 'create'}), name='notification-create'),
     path('notification/delete/', NotificationViewSet.as_view({'delete': 'destroy'}), name='notification-delete'),
     path('organization/', OrganizationViewSet.as_view({'get': 'list'}), name='organization'),
-    path('organization/<str:org_name>/', OrganizationViewSet.as_view({'get': 'get_by_name'}), name='organization-by-name'),
+    path('organization/<str:org_name>/', OrganizationViewSet.as_view({'get': 'get_by_name'}), name='organization-detail'),
     path('achievement/', AchievementViewSets.as_view({'post': 'create', 'get': 'list'}), name='achievement'),
-    path('achievement/<int:pk>/', AchievementViewSets.as_view({'get': 'retrieve', }), name='achievement-detail'),
+    path('achievement/<int:pk>/', AchievementViewSets.as_view({'get': 'retrieve', 'delete': 'destroy'}), name='achievement-detail'),
     path('achievement/mock/', AchievementViewSets.as_view({'post': 'mock_achievements'}), name='achievement-mock'),
+    path('experience/', ExperienceViewSet.as_view({'post': 'create', 'get': 'list'}), name='experience'),
+    path('experience/<int:pk>/', ExperienceViewSet.as_view({'get': 'retrieve', 'delete': 'destroy'}), name='experience-detail'),
 ]
