@@ -2,7 +2,9 @@ from django.db import models
 from users.models.custom_user import CustomUser
 
 class Achievement(models.Model):
-    achievement = models.TextField(unique=True, max_length=250)
+    topic = models.TextField(unique=True, max_length=250)
+    sub_topic = models.TextField(max_length=250)
+    description = models.TextField(max_length=1000)
     create_at = models.DateField(primary_key=True)
     date = models.DateField(blank=True, null=True)
     username = models.OneToOneField(CustomUser, max_length=100, on_delete=models.CASCADE)
