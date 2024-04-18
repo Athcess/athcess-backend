@@ -131,12 +131,10 @@ class UserViewSet(viewsets.ModelViewSet):
         if role == 'athlete':
             instance = Athlete.objects.get(username=username)
             serializer = AthleteSerializer(instance, data=request.data, context={'request': request})
-            response = serializer.data
 
         elif role == 'scout':
             instance = Scout.objects.get(username=username)
             serializer = ScoutSerializer(instance, data=request.data, context={'request': request})
-            response = serializer.data
 
         else:
             return Response({"message": "Invalid role???"}, status=status.HTTP_400_BAD_REQUEST)
@@ -144,6 +142,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
+        response = serializer.data
 
         return Response(response)
 
