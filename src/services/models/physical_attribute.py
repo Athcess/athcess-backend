@@ -3,9 +3,9 @@ from users.models.custom_user import CustomUser
 
 
 class PhysicalAttribute(models.Model):
-    date = models.DateTimeField(primary_key=True)
+    create_at = models.DateTimeField(primary_key=True)
     username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    height = models.IntegerField()
+    height = models.DecimalField(max_digits=4, decimal_places= 1)
     weight = models.DecimalField(max_digits=4, decimal_places= 1)
     fat_mass = models.DecimalField(max_digits= 4, decimal_places= 2)
     muscle_mass = models.DecimalField(max_digits= 4, decimal_places=2)
@@ -17,5 +17,5 @@ class PhysicalAttribute(models.Model):
         db_table = "physical_attribute"
     
     def __str__(self):
-        return (self.date, self.muscle_mass)
+        return (self.date)
 
