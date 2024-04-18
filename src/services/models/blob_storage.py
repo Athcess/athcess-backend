@@ -13,6 +13,7 @@ class BlobStorage(models.Model):
     username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     club_name = models.ForeignKey(Organization, on_delete=models.CASCADE, blank=True, null=True)
     physical_attribute = models.ForeignKey(PhysicalAttribute, on_delete=models.CASCADE, blank=True, null=True)
+    physical_attribute_type = models.CharField(max_length=30, blank=True, null=True, choices=[('run', 'Run'), ('push_up', 'Push Up'), ('sit_up', 'Sit Up')])
     content_type = models.CharField(max_length=30)
     description = models.CharField(max_length=30,blank=True, null=True)
     url = models.TextField(max_length=250)
@@ -20,7 +21,6 @@ class BlobStorage(models.Model):
     status = models.CharField(max_length=30, choices=[('pending', 'Pending'), ('uploaded', 'Uploaded'), ('failed', 'Failed')])
     file_size = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    skill_type = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         db_table = "blob_storage"
