@@ -3,9 +3,10 @@ from users.models.custom_user import CustomUser
 
 class Experience(models.Model):
     topic = models.CharField(primary_key=True, max_length=150)
-    date = models.DateField(blank=True, null=True)
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
     create_at = models.DateField()
-    username = models.OneToOneField(CustomUser, max_length=100, on_delete=models.CASCADE)
+    username = models.ForeignKey(CustomUser, max_length=100, on_delete=models.CASCADE)
     description = models.TextField()
 
     class Meta:

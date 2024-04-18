@@ -18,7 +18,7 @@ class SignupTest(TestCase):
     data = {
         "username": "cr7",
         "first_name": "cristiano",
-        "last_name":"ronaldo",
+        "last_name": "ronaldo",
         "role": "athlete",
         "password": "123456",
         "confirm_password": "123456",
@@ -47,3 +47,5 @@ class SignupTest(TestCase):
         url = reverse('signup')
         response = self.client.post(url, self.data, format='json')
         self.assertEqual(response.status_code, 201)
+        response = self.client.post(url, self.data, format='json')
+        self.assertEqual(response.status_code, 400)

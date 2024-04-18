@@ -12,7 +12,7 @@ import mimetypes
 
 BANNED_TYPES = ['application/javascript', 'application/exe', 'application/x-exe', 'application/dos-exe',
                 'vms/exe', 'application/x-winexe', 'application/msdos-windows', 'application/x-msdos-program']
-TOKEN_EXPIRY_DURATION = 5
+TOKEN_EXPIRY_DURATION = 10
 STATUS_LIST = ['failed', 'pending']
 AZURE_CONTAINER = 'media'
 AZURE_BLOB_URL = 'https://{account_name}.blob.core.windows.net'

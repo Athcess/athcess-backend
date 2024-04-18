@@ -6,6 +6,7 @@ from ..models.experience import Experience
 from ..models.physical_attribute import PhysicalAttribute
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
+from django.contrib.auth.models import User
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -74,7 +75,12 @@ class UserViewSet(viewsets.ModelViewSet):
             # achievements
             try:
                 achievements = Achievement.objects.filter(username=username)
-                response['achievements'] = [{'achievement': achievement.achievement, 'date': achievement.date} for
+                response['achievements'] = [{'topic': achievement.topic,
+                                             'sub_topic': achievement.sub_topic,
+                                             'description': achievement.description,
+                                             'date': achievement.date,
+                                             'create_at': achievement.create_at
+                                             } for
                                             achievement in achievements]
             except Achievement.DoesNotExist:
                 response['achievement'] = None
@@ -82,15 +88,17 @@ class UserViewSet(viewsets.ModelViewSet):
             # experience
             try:
                 experiences = Experience.objects.get(username=username)
-                response['experiences'] = [{'topic': experience.topic, 'date': experience.date, 'description':
-                                            experience.description} for experience in experiences]
+                response['experiences'] = [{'topic': experience.topic,
+                                            'start_date': experience.start_date,
+                                            'end_date': experience.end_date,
+                                            'create_at': experience.create_at,
+                                            'description': experience.description}
+                                           for experience in experiences]
             except Experience.DoesNotExist:
                 response['experience'] = None
 
             # define tier
-            tier = False
-            if role == 'scout':
-                tier = Scout.objects.get(username=username).tier
+            tier = role == 'scout' and Scout.objects.get(username=username).tier
 
             own = request.user.username == kwargs.get('pk')
 
@@ -113,6 +121,9 @@ class UserViewSet(viewsets.ModelViewSet):
                 except PhysicalAttribute.DoesNotExist:
                     response['physical_attribute'] = None
 
+            response['first_name'] = User.objects.get(username=username).first_name
+            response['last_name'] = User.objects.get(username=username).last_name
+
             return Response(response)
 
         except CustomUser.DoesNotExist:
@@ -127,12 +138,10 @@ class UserViewSet(viewsets.ModelViewSet):
         if role == 'athlete':
             instance = Athlete.objects.get(username=username)
             serializer = AthleteSerializer(instance, data=request.data, context={'request': request})
-            response = serializer.data
 
         elif role == 'scout':
             instance = Scout.objects.get(username=username)
             serializer = ScoutSerializer(instance, data=request.data, context={'request': request})
-            response = serializer.data
 
         else:
             return Response({"message": "Invalid role???"}, status=status.HTTP_400_BAD_REQUEST)
@@ -140,12 +149,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
+        response = serializer.data
 
         return Response(response)
-
-
-
-
-
-
 

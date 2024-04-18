@@ -1,0 +1,74 @@
+[
+  {
+    "model": "services.post",
+    "pk": 1,
+    "fields": {
+      "username": "punnshelby",
+      "created_at": "2024-04-17T14:58:46.686Z",
+      "description": "First post from punn",
+      "has_attachment": true,
+      "likes": "smartart",
+      "highlight": true
+    }
+  },
+  {
+    "model": "services.post",
+    "pk": 2,
+    "fields": {
+      "username": "punnshelby",
+      "created_at": "2024-04-17T14:58:53.877Z",
+      "description": "Second post from punn",
+      "has_attachment": false,
+      "likes": "smartart,punnshelby,cr7",
+      "highlight": true
+    }
+  },
+  {
+    "model": "services.post",
+    "pk": 3,
+    "fields": {
+      "username": "punnshelby",
+      "created_at": "2024-04-17T14:59:03.858Z",
+      "description": "third post from punn",
+      "has_attachment": true,
+      "likes": "smartart",
+      "highlight": false
+    }
+  },
+  {
+    "model": "services.post",
+    "pk": 4,
+    "fields": {
+      "username": "punnshelby",
+      "created_at": "2024-04-17T14:59:10.725Z",
+      "description": "fourth post from punn",
+      "has_attachment": false,
+      "likes": "smartart",
+      "highlight": false
+    }
+  },
+  {
+    "model": "services.post",
+    "pk": 5,
+    "fields": {
+      "username": "kornza",
+      "created_at": "2024-04-17T14:59:50.625Z",
+      "description": "first post from punn",
+      "has_attachment": true,
+      "likes": "",
+      "highlight": false
+    }
+  },
+  {
+    "model": "services.post",
+    "pk": 6,
+    "fields": {
+      "username": "smartart",
+      "created_at": "2024-04-17T15:00:36.316Z",
+      "description": "first post from art",
+      "has_attachment": true,
+      "likes": "",
+      "highlight": false
+    }
+  }
+]
