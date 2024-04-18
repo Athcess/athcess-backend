@@ -75,7 +75,12 @@ class UserViewSet(viewsets.ModelViewSet):
             # achievements
             try:
                 achievements = Achievement.objects.filter(username=username)
-                response['achievements'] = [{'achievement': achievement.achievement, 'date': achievement.date} for
+                response['achievements'] = [{'topic': achievement.topic,
+                                             'sub_topic': achievement.sub_topic,
+                                             'description': achievement.description,
+                                             'date': achievement.date,
+                                             'create_at': achievement.create_at
+                                             } for
                                             achievement in achievements]
             except Achievement.DoesNotExist:
                 response['achievement'] = None
@@ -83,15 +88,17 @@ class UserViewSet(viewsets.ModelViewSet):
             # experience
             try:
                 experiences = Experience.objects.get(username=username)
-                response['experiences'] = [{'topic': experience.topic, 'date': experience.date, 'description':
-                                            experience.description} for experience in experiences]
+                response['experiences'] = [{'topic': experience.topic,
+                                            'start_date': experience.start_date,
+                                            'end_date': experience.end_date,
+                                            'create_at': experience.create_at,
+                                            'description': experience.description}
+                                           for experience in experiences]
             except Experience.DoesNotExist:
                 response['experience'] = None
 
             # define tier
-            tier = False
-            if role == 'scout':
-                tier = Scout.objects.get(username=username).tier
+            tier = role == 'scout' and Scout.objects.get(username=username).tier
 
             own = request.user.username == kwargs.get('pk')
 
@@ -145,10 +152,4 @@ class UserViewSet(viewsets.ModelViewSet):
         response = serializer.data
 
         return Response(response)
-
-
-
-
-
-
 
