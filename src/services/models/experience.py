@@ -6,7 +6,7 @@ class Experience(models.Model):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     create_at = models.DateField()
-    username = models.OneToOneField(CustomUser, max_length=100, on_delete=models.CASCADE)
+    username = models.ForeignKey(CustomUser, max_length=100, on_delete=models.CASCADE)
     description = models.TextField()
 
     class Meta:

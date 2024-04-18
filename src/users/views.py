@@ -141,7 +141,7 @@ def signin(request):
                 serializable_data[field.name] = str(getattr(user, field.name))
         serializable_data['first_name'] = User.objects.get(username=request.data['username']).first_name
         serializable_data['last_name'] = User.objects.get(username=request.data['username']).last_name
-
+        serializable_data['role'] = role
 
 
         return Response({'message': 'Login Success', 'access_token': str(refresh.access_token),
