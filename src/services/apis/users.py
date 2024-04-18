@@ -6,6 +6,7 @@ from ..models.experience import Experience
 from ..models.physical_attribute import PhysicalAttribute
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
+from django.contrib.auth.models import User
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -112,6 +113,9 @@ class UserViewSet(viewsets.ModelViewSet):
                     ]
                 except PhysicalAttribute.DoesNotExist:
                     response['physical_attribute'] = None
+
+            response['first_name'] = User.objects.get(username=username).first_name
+            response['last_name'] = User.objects.get(username=username).last_name
 
             return Response(response)
 

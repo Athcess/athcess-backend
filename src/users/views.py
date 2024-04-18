@@ -65,6 +65,8 @@ def signup(request):
         if auth_serializer.data['role'] == 'athlete':
             serializer_data = {
                 'username': auth_serializer.data['username'],
+                'first_name': request.data['first_name'],
+                'last_name': request.data['last_name'],
                 'age': request.data['age'],
                 'position': request.data['position'],
                 'birth_date': request.data['birth_date'],
@@ -85,6 +87,8 @@ def signup(request):
                                'hometown': request.data['hometown'],
                                'age': request.data['age'],
                                'tier': request.data['tier'],
+                               'first_name': request.data['first_name'],
+                               'last_name': request.data['last_name'],
                                }
 
             scout_serializer = ScoutSerializer(data=serializer_data)
@@ -96,6 +100,8 @@ def signup(request):
         if auth_serializer.data['role'] == 'admin':
             admin_serializer = AdminSerializer(data={
                                                         'username': auth_serializer.data['username'],
+                                                        'first_name': request.data['first_name'],
+                                                        'last_name': request.data['last_name'],
                                                         'description': request.data['description'],
                                                      }
                                                )
@@ -103,6 +109,7 @@ def signup(request):
             if admin_serializer.is_valid():
                 admin_serializer.save()
                 response['organization'] = admin_serializer.data
+
 
         return Response(response, status=status.HTTP_201_CREATED)
 
@@ -132,8 +139,10 @@ def signin(request):
             serializable_data[field.name] = getattr(user, field.name)
             if field.name == 'birth_date' or field.name == 'username':
                 serializable_data[field.name] = str(getattr(user, field.name))
+        serializable_data['first_name'] = User.objects.get(username=request.data['username']).first_name
+        serializable_data['last_name'] = User.objects.get(username=request.data['username']).last_name
 
-        print(serializable_data)
+
 
         return Response({'message': 'Login Success', 'access_token': str(refresh.access_token),
                         'refresh_token': str(refresh), 'data': [serializable_data]}, status=status.HTTP_200_OK,
