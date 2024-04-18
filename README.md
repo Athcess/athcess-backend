@@ -52,3 +52,13 @@ cd src
 ```sh
 python manage.py runserver
 ```
+### Export database
+```
+python manage.py dumpdata services --output fixtures/services.json
+python manage.py dumpdata users --output fixtures/users.json
+python manage.py dumpdata auth.user --output fixtures/auth.json
+```
+### Import database
+```
+python manage.py loaddata fixtures/*.json
+```
