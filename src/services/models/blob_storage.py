@@ -3,11 +3,13 @@ from .post import Post
 from .is_verified import IsVerified as Verified
 from .physical_attribute import PhysicalAttribute
 from users.models.custom_user import CustomUser, Organization
+from ..models.event import Event
 
 
 class BlobStorage(models.Model):
     blob_id = models.AutoField(primary_key=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, blank=True, null=True)
     is_profile_picture = models.BooleanField(default=False)
     verify = models.ForeignKey(Verified, on_delete=models.CASCADE, blank=True, null=True)
     username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

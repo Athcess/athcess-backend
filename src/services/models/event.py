@@ -5,13 +5,12 @@ from users.models.custom_user import Organization
 class Event(models.Model):
     event_id = models.AutoField(primary_key=True)
     club = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    content = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
-    like = ArrayField(models.IntegerField(), default=list)
-    date_start = models.DateField()
-    date_end = models.DateField()
-    start_time = models.TimeField()
-    duration = models.DurationField()
+    description = models.TextField(max_length=1000)
+    has_attachment = models.BooleanField(default=False)
+    like = models.TextField(default='', blank=True, null=True)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
 
     class Meta:
         db_table = "event"

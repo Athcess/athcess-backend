@@ -93,6 +93,7 @@ class UploadFileViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset().filter(username=request.user.username)
         if request.query_params.get('username'):
             queryset = queryset.filter(username=request.query_params.get('username'))
+
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
