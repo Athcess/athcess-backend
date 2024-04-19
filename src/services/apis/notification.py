@@ -19,15 +19,18 @@ class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
 
-    def get(self, request, *args, **kwargs):
-        notifications = Notification.objects.all()
-        return Response({"notifications": notifications}, status=status.HTTP_200_OK)
+    def list(self, request, *args, **kwargs):
+        queryset = Notification.objects.all()
+        for key, value in request.query_params.items():
+            queryset = queryset.filter(**{key: value})
+        serializer = NotificationSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
         data = {
             'username': request.data.get('username'),
             'content': request.data.get('content'),
-            'type' : request.data.get('type'),
+            'type': request.data.get('type'),
         }
         notification_serializer = NotificationSerializer(data=data)
         if notification_serializer.is_valid():
