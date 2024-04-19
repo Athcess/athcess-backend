@@ -32,7 +32,9 @@ class CommentViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, request, *args, **kwargs):
-        queryset = Comment.objects.filter(post=request.data['post'])
+        queryset = Comment.objects.all()
+        for key, value in request.query_params.items():
+            queryset = queryset.filter(**{key: value})
         serializer = CommentSerializer(queryset, many=True)
         return Response(serializer.data)
 
