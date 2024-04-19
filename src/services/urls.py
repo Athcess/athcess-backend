@@ -32,5 +32,5 @@ urlpatterns = [
     path('achievement/<str:pk>/', AchievementViewSets.as_view({'get': 'retrieve', 'delete': 'destroy', 'put': 'update'}), name='achievement-detail'),
     path('achievement/mock/', AchievementViewSets.as_view({'post': 'mock_achievements'}), name='achievement-mock'),
     path('experience/', ExperienceViewSet.as_view({'post': 'create', 'get': 'list'}), name='experience'),
-    path('experience/<int:pk>/', ExperienceViewSet.as_view({'get': 'retrieve', 'delete': 'destroy'}), name='experience-detail'),
+    path('experience/<str:pk>/', ExperienceViewSet.as_view({'get': 'retrieve', 'delete': 'destroy', 'put':'update'}), name='experience-detail'),
 ]
