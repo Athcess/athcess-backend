@@ -14,6 +14,7 @@ class CustomUser(AbstractUser):
     password = models.CharField(max_length=128, blank=True) # protect password
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+    following = models.TextField(max_length=1000, default='', blank=True, null=True)
 
     groups = models.ManyToManyField(
         'auth.Group',
@@ -245,7 +246,7 @@ class Scout(models.Model):
 
 
 class Admin_organization(models.Model):
-    username = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    username = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     description = models.TextField()
 
     class Meta:
@@ -256,8 +257,12 @@ class Admin_organization(models.Model):
 
 
 class Organization(models.Model):
-    admin = models.ForeignKey(Admin_organization, on_delete=models.CASCADE, blank=True, null=True)
+    username = models.ForeignKey(Admin_organization, on_delete=models.CASCADE, blank=True, null=True)
     club_name = models.CharField(max_length=100, primary_key=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
+    followers = models.TextField(default='', blank=True, null=True)
+    approved = models.BooleanField(default=False)
+
 
     class Meta:
         db_table = "organization"
