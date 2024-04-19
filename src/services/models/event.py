@@ -11,7 +11,6 @@ class Event(models.Model):
     like = models.TextField(default='', blank=True, null=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    has_attachment = models.BooleanField()
 
     class Meta:
         db_table = "event"
