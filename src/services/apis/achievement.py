@@ -36,6 +36,8 @@ class AchievementViewSets(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
+        for key, value in request.query_params.items():
+            queryset = queryset.filter(**{key: value})
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
