@@ -1,9 +1,8 @@
 [
   {
     "model": "users.customuser",
-    "pk": 1,
+    "pk": "punnshelby",
     "fields": {
-      "username": "punnshelby",
       "role": "athlete",
       "password": "",
       "email": "",
