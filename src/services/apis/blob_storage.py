@@ -17,7 +17,6 @@ STATUS_LIST = ['failed', 'pending']
 AZURE_CONTAINER = 'media'
 AZURE_BLOB_URL = 'https://{account_name}.blob.core.windows.net'
 
-
 # Serializer class
 class BlobSerializer(serializers.ModelSerializer):
     class Meta:
