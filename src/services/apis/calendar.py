@@ -36,13 +36,13 @@ class EventViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         data = {
             'event_id': request.data.get('event_id'),
-            'club': request.data.get('org_name'),
+            'club': request.data.get('club'),
             'content': request.data.get('content'),
             'created_at': timezone.now(),
-            'date_start': request.data.get('date_start'),
-            'date_end': request.data.get('date_end'),
+            'description': request.data.get('description'),
             'start_time': request.data.get('start_time'),
-            'duration': request.data.get('duration')
+            'end_time': request.data.get('end_time'),
+            'has_attachment': request.data.get('has_attachment'),
         }
         event_serializer = EventSerializer(data=data)
         if event_serializer.is_valid():
