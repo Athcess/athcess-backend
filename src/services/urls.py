@@ -11,6 +11,7 @@ from .apis.achievement import AchievementViewSets
 from .apis.experience import ExperienceViewSet
 from .apis.comment import CommentViewSet
 from .apis.like_comment import LikeCommentViewSet
+from .apis.repost import RepostViewSet
 
 urlpatterns = [
     path('search/', SearchViewSet.searched, name='searched'),
@@ -19,6 +20,7 @@ urlpatterns = [
     path('post/', PostViewSet.as_view({'post': 'create', 'get': 'list'}), name='post'),
     path('post/<int:pk>/', PostViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}),
          name='post-detail'),
+    path('repost/', RepostViewSet.as_view({'post': 'create'}), name='repost'),
     path('like/<int:pk>/', LikeViewSet.as_view({'post': 'like'}), name='like'),
     path('users/<str:pk>/', UserViewSet.as_view({'get': 'retrieve', 'put': 'update'}), name='user-detail'),
     path('calendar/get/', EventViewSet.as_view({'get': 'list'}), name='calendar-get'),
