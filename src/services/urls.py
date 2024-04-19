@@ -16,7 +16,7 @@ from .apis.follow import FollowViewSet
 from .apis.analytic import AnalyticsViewSet
 
 urlpatterns = [
-    path('search/', SearchViewSet.searched, name='searched'),
+    path('search/', SearchViewSet.as_view({'get': 'search'}), name= 'description-search')
     path('upload/', UploadFileViewSet.as_view({'post': 'create', 'get': 'list'}), name='upload'),
     path('upload/<int:pk>/', UploadFileViewSet.as_view({'put': 'update', 'get': 'retrieve', 'delete': 'destroy'}), name='upload-detail'),
     path('post/', PostViewSet.as_view({'post': 'create', 'get': 'list'}), name='post'),
