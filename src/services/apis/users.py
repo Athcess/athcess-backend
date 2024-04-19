@@ -75,7 +75,9 @@ class UserViewSet(viewsets.ModelViewSet):
             # achievements
             try:
                 achievements = Achievement.objects.filter(username=username)
-                response['achievements'] = [{'topic': achievement.topic,
+                response['achievements'] = [{
+                                             'ahievement_id': achievement.achievement_id,
+                                             'topic': achievement.topic,
                                              'sub_topic': achievement.sub_topic,
                                              'description': achievement.description,
                                              'date': achievement.date,
@@ -88,7 +90,9 @@ class UserViewSet(viewsets.ModelViewSet):
             # experience
             try:
                 experiences = Experience.objects.filter(username=username)
-                response['experiences'] = [{'topic': experience.topic,
+                response['experiences'] = [{
+                                            'experience_id': experience.experience_id,
+                                            'topic': experience.topic,
                                             'start_date': experience.start_date,
                                             'end_date': experience.end_date,
                                             'created_at': experience.created_at,
