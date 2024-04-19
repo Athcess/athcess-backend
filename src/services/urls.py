@@ -13,6 +13,7 @@ from .apis.comment import CommentViewSet
 from .apis.like_comment import LikeCommentViewSet
 from .apis.repost import RepostViewSet
 from .apis.follow import FollowViewSet
+from .apis.analytic import AnalyticsViewSet
 
 urlpatterns = [
     path('search/', SearchViewSet.searched, name='searched'),
@@ -50,4 +51,5 @@ urlpatterns = [
     path('comment/<int:pk>/', CommentViewSet.as_view({'get': 'retrieve', 'delete': 'destroy', 'put': 'update'}),
          name='comment-detail'),
     path('like_comment/<int:pk>/', LikeCommentViewSet.as_view({'post': 'like'}), name='like-comment'),
+    path('analytics/', AnalyticsViewSet.as_view({'get': 'get_analytics'}), name='analytics'),
 ]
