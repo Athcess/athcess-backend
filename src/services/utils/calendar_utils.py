@@ -20,7 +20,11 @@ def append_event(calendar_data, day, event_data):
                     'id': event.event_id,
                     'content': event.content,
                     'created_at': event.created_at,
-                    'like': event.like
+                    'like': event.like,
+                    'date_start': event.date_start,
+                    'date_end': event.date_end,
+                    'start_time': event.start_time,
+                    'duration': event.duration
                 }
                 day_data['events'].append(event_data_list)
     return calendar_data
