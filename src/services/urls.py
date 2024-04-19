@@ -15,8 +15,8 @@ from .apis.repost import RepostViewSet
 
 urlpatterns = [
     path('search/', SearchViewSet.searched, name='searched'),
-    path('upload/', UploadFileViewSet.as_view({'post': 'create'}), name='upload'),
-    path('upload/<int:pk>/', UploadFileViewSet.as_view({'put': 'update', 'delete': 'destroy'}), name='upload-detail'),
+    path('upload/', UploadFileViewSet.as_view({'post': 'create', 'get': 'list'}), name='upload'),
+    path('upload/<int:pk>/', UploadFileViewSet.as_view({'put': 'update', 'get': 'retrieve', 'delete': 'destroy'}), name='upload-detail'),
     path('post/', PostViewSet.as_view({'post': 'create', 'get': 'list'}), name='post'),
     path('post/<int:pk>/', PostViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}),
          name='post-detail'),
