@@ -40,6 +40,10 @@ class EventViewSet(viewsets.ModelViewSet):
             'club': request.data.get('org_name'),
             'content': request.data.get('content'),
             'created_at': timezone.now(),
+            'date_start': request.data.get('date_start'),
+            'date_end': request.data.get('date_end'),
+            'start_time': request.data.get('start_time'),
+            'duration': request.data.get('duration')
         }
         event_serializer = EventSerializer(data=data)
         if event_serializer.is_valid():
