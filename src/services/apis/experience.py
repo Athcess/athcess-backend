@@ -4,6 +4,7 @@ from rest_framework import viewsets, status, permissions, serializers
 from rest_framework.response import Response
 from django.utils import timezone
 
+
 class ExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Experience
@@ -16,25 +17,26 @@ class ExperienceViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        create_at = timezone.now()
+        created_at = timezone.now()
         serializer = ExperienceSerializer(data={
                                             'topic': request.data['topic'],
                                             'start_date': request.data['start_date'],
                                             'end_date': request.data['end_date'],
                                             'username': request.user,
                                             'description': request.data['description'],
-                                            'create_at': create_at
+                                            'created_at': created_at
                                           })
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
+        for key, value in request.query_params.items():
+            queryset = queryset.filter(**{key: value})
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
