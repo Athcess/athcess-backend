@@ -81,6 +81,14 @@ class UploadFileViewSet(viewsets.ModelViewSet):
                                                  'username': self.request.user.username,
                                                  'description': self.request.data.get('description', None),
                                                  'status': STATUS_LIST[1],
+                                                 'post': self.request.data.get('post', None),
+                                                 'created_at': datetime.now(),
+                                                 'physical_attribute': self.request.data.get('physical_attributes', None),
+                                                 'physical_attribute_type': self.request.data.get('physical_attribute_type', None),
+                                                 'club_name': self.request.data.get('club_name', None),
+                                                 'is_profile_picture': self.request.data.get('is_profile_picture', False),
+                                                 'event': self.request.data.get('event', None),
+                                                 'verify': self.request.data.get('verify', None),
                                                  })
 
         if serializer.is_valid():
