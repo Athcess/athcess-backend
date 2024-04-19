@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework import serializers
-from .models.custom_user import CustomUser, Athlete, Scout, Admin_organization
+from .models.custom_user import CustomUser, Athlete, Scout, Admin_organization, Organization
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from rest_framework.response import Response
@@ -41,6 +41,10 @@ class AdminSerializer(serializers.ModelSerializer):
         model = Admin_organization
         fields = '__all__'
 
+class OrganizationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Organization
+        fields = '__all__'
 
 @api_view(['POST'])
 def signup(request):
@@ -105,10 +109,26 @@ def signup(request):
                                                         'description': request.data['description'],
                                                      }
                                                )
+            organization_serializer = OrganizationSerializer(data={
+                                                        'username_id': request.data['username'],
+                                                        'club_name': request.data['club_name'],
+                                                        'location': request.data['location'],
+                                                        'followers': '',
+                                                        'approved': False,
+            })
 
-            if admin_serializer.is_valid():
-                admin_serializer.save()
-                response['organization'] = admin_serializer.data
+            if not admin_serializer.is_valid():
+                return Response(admin_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            admin_serializer.save()
+            response['admin'] = admin_serializer.data
+
+            if not organization_serializer.is_valid():
+                return Response(organization_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            organization_serializer.save()
+            response['organization'] = organization_serializer.data
+
 
 
         return Response(response, status=status.HTTP_201_CREATED)
