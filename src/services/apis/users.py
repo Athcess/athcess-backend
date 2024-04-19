@@ -79,7 +79,7 @@ class UserViewSet(viewsets.ModelViewSet):
                                              'sub_topic': achievement.sub_topic,
                                              'description': achievement.description,
                                              'date': achievement.date,
-                                             'create_at': achievement.create_at
+                                             'created_at': achievement.created_at
                                              } for
                                             achievement in achievements]
             except Achievement.DoesNotExist:
@@ -87,11 +87,11 @@ class UserViewSet(viewsets.ModelViewSet):
 
             # experience
             try:
-                experiences = Experience.objects.get(username=username)
+                experiences = Experience.objects.filter(username=username)
                 response['experiences'] = [{'topic': experience.topic,
                                             'start_date': experience.start_date,
                                             'end_date': experience.end_date,
-                                            'create_at': experience.create_at,
+                                            'created_at': experience.created_at,
                                             'description': experience.description}
                                            for experience in experiences]
             except Experience.DoesNotExist:
