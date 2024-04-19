@@ -17,10 +17,10 @@ class AchievementViewSets(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        create_at = timezone.now()
+        created_at = timezone.now()
         serializer = AchievementSerializer(data={
                                             'username': request.user,
-                                            'created_at': create_at,
+                                            'created_at': created_at,
                                             'date': request.data['date'],
                                             'topic': request.data['topic'],
                                             'sub_topic': request.data['sub_topic'],
@@ -28,6 +28,7 @@ class AchievementViewSets(viewsets.ModelViewSet):
                                           })
 
         if not serializer.is_valid():
+            print(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         serializer.save()
