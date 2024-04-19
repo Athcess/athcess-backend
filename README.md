@@ -62,3 +62,12 @@ python manage.py dumpdata auth.user --output fixtures/auth.json
 ```
 python manage.py loaddata fixtures/*.json
 ```
+
+### Run tests
+```
+python manage.py test tests 
+```
+### Extra information for test
+```
+python manage.py test tests --verbosity=3
+```
