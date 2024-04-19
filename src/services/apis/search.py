@@ -6,8 +6,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.db.models import Q
 from ..models.physical_attribute import PhysicalAttribute
-from ..models.user import User
-from ..models.post import Post
 from ..models.post import Post
 from ..models.event import Event
 from users.models.custom_user import CustomUser, Athlete, Scout, Organization
@@ -125,7 +123,7 @@ class SearchViewSet(viewsets.ModelViewSet) :
 
 class UserSerializer(serializers.ModelSerializer) :
     class Meta:
-        model = User
+        model = CustomUser
         fields = '__all__'
 
 class PhysicalAttributeSerializer(serializers.ModelSerializer) :
@@ -142,7 +140,7 @@ class SearchViewSet(viewsets.ModelViewSet) :
     querysetPost = Post.objects.all()
     serializerPost = PostSerializer
 
-    querysetUser = User.objects.all()
+    querysetUser = CustomUser.objects.all()
     serializerUser = UserSerializer
 
     @action(detail=False, methods=['get'])
