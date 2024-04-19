@@ -6,7 +6,8 @@ class IsFriendOf(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_id')
     friend_user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='friend_user_id')
-    status = models.BooleanField()
+    status = models.CharField(max_length=50, choices=[('pending', 'pending'), ('accepted', 'accepted')])
+    since = models.DateTimeField(blank=True, null=True)
 
 
     class Meta:
