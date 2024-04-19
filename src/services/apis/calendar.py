@@ -1,7 +1,4 @@
 from rest_framework.decorators import api_view
-from rest_framework import viewsets
-from rest_framework import status
-from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.db.models import Q
@@ -12,6 +9,7 @@ from ..utils.mock_event import mock_event_data
 from ..utils.calendar_utils import create_calendar,append_event
 from datetime import datetime
 from django.http import JsonResponse
+from rest_framework import viewsets, status, permissions, serializers
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,6 +19,7 @@ class EventSerializer(serializers.ModelSerializer):
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=False, methods=['get'], url_path='get-calendar')
     def get(self, request, *args, **kwargs):
@@ -80,3 +79,33 @@ class EventViewSet(viewsets.ModelViewSet):
             created_events.append(event)
         
         return Response({'message': f'{num_events} mock events created successfully'}, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['get'], url_path='calendar/')
+    def get_event_by_organization(self, request):
+        org_name = request.query_params.get('org_name')
+        if not org_name:
+            return Response({'message': 'Organization name not provided in the query'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        events = Event.objects.filter(club=org_name)
+        if not events:
+            return Response({'message': 'No events found for the organization'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serialized_events = EventSerializer(events, many=True).data
+        return Response({'events': serialized_events}, status=status.HTTP_200_OK)
+
+    def get_event_by_id(self, request, *args, **kwargs):
+        event_id = request.data.get('event_id')
+        event = Event.objects.filter(event_id=event_id)
+        if not event:
+            return Response({'message': 'No event found with the given id'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'event': event}, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'], url_path='calendar/upcoming/')
+    def get_upcoming_events(self, request):
+        now = datetime.now()
+        events = Event.objects.filter(created_at__month=now.month)
+        if not events:
+            return Response({'message': 'No events found for the month'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serialized_events = EventSerializer(events, many=True).data
+        return Response({'events': serialized_events}, status=status.HTTP_200_OK)
