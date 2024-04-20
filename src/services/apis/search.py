@@ -60,18 +60,18 @@ class SearchViewSet(viewsets.ModelViewSet) :
     serializerEvent = EventSerializer
 
 
-    @action(detail=False, methods=['get'])
-    def search(self, request) :
+    @action(detail=False, methods=['post'])
+    def search(self, request):
         search_type = request.data['type']
         search_filter = request.data['filter']
         search_desc = request.data['search_info']
         if not search_desc or not search_type :
             return Response('Input value please', status=status.HTTP_400_BAD_REQUEST)
-        if search_type == 'Post' :
+        if search_type == 'Post':
             querysetPost = Post.objects.all().filter(Q(description__icontains=search_desc) 
             | Q(username__first_name__icontains=search_desc) | Q(username__last_name__icontains=search_desc))
             serializer = PostSerializer(querysetPost, many=True, data=querysetPost)
-        elif search_type == 'Athlete' :
+        elif search_type == 'Athlete':
             tage = search_filter.get('age')
             tlocation = search_filter.get('hometown')
             filters = {}
@@ -79,13 +79,13 @@ class SearchViewSet(viewsets.ModelViewSet) :
                 filters['age'] = tage
             if tlocation:
                 filters['hometown'] = tlocation
-            if search_desc.isdigit() :
+            if search_desc.isdigit():
                 querysetAthlete = Athlete.objects.filter(Q(age__exact=search_desc), **filters)
             else :
                 querysetAthlete = Athlete.objects.filter(Q(hometown__icontains=search_desc) | Q(position=search_desc) 
                 | Q(username__first_name__icontains=search_desc)| Q(username__last_name__icontains=search_desc), **filters)
             serializer = AthleteSerializer(querysetAthlete, many=True, data=querysetAthlete)
-        elif search_type == 'Scout' :
+        elif search_type == 'Scout':
             tage = search_filter.get('age')
             tlocation = search_filter.get('hometown')
             filters = {}
