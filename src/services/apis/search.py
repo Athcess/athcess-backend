@@ -16,7 +16,7 @@ from users.models.custom_user import CustomUser, Athlete, Scout, Organization
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['username', 'first_name', 'last_name']
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -104,7 +104,7 @@ class SearchViewSet(viewsets.ModelViewSet):
         usernames = list(queryset.values_list('username', flat=True))
 
         queryset = Athlete.objects.filter(username__in=usernames)
-        for key, value in request.query_params.items():
+        for key, value in filters.items():
             if key in ['age', 'location', 'position']:
                 queryset = queryset.filter(**{f'{key}': value})
 
