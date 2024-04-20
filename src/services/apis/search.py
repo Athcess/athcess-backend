@@ -102,7 +102,7 @@ class SearchViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(**{f'{key}': value})
 
         usernames = list(queryset.values_list('username', flat=True))
-        
+
         queryset = Athlete.objects.filter(username__in=usernames)
         for key, value in request.query_params.items():
             if key in ['age', 'location', 'position']:
