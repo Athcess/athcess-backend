@@ -69,11 +69,11 @@ class AnalyticsViewSet(viewsets.ModelViewSet):
 
         elif physical_attribute_type == 'run':
             try:
-                speed = calculate_speed(url, int(height))
+                speed = calculate_speed(url, float(height))
                 physical_attribute = {
                     'created_at': timezone.now(),
                     'username': username,
-                    'run': int(speed),
+                    'run': float(speed),
                     'height': height,
                 }
                 serializer = PhysicalAttributeSerializer(data=physical_attribute)
