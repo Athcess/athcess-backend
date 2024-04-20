@@ -6,7 +6,6 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 
-
 from ..models.physical_attribute import PhysicalAttribute
 from ..models.post import Post
 from ..models.event import Event
@@ -41,7 +40,7 @@ class ScoutSerializer(serializers.ModelSerializer):
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
-        fields = '__all__'
+        fields = ['club_name', 'location', 'followers']
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -73,18 +72,50 @@ class SearchViewSet(viewsets.ModelViewSet):
         data = request.data.get('data', '')
 
         if type == 'athlete':
-            athletes = User.objects.filter(Q(first_name__icontains=data) | Q(last_name__icontains=data))
-            serializer = UserSerializer(athletes, many=True)
-            search = Search.objects.create(data=serializer.data)
+            athletes_data = []
+
+            athletes = CustomUser.objects.filter(
+                Q(first_name__icontains=data) | Q(last_name__icontains=data),
+                role='athlete'
+            )
+
+            athlete_details = Athlete.objects.filter(username__in=athletes.values_list('username', flat=True))
+
+            for athlete in athletes:
+                athlete_data = {
+                    'username': athlete.username,
+                    'first_name': athlete.first_name,
+                    'last_name': athlete.last_name,
+                    **athlete_details.filter(username=athlete.username).values('age', 'hometown', 'position').first()
+                }
+
+                athletes_data.append(athlete_data)
+
+            search = Search.objects.create(data=athletes_data)
             search_id = search.search_id
-            return Response({'search_id': search_id, 'data': serializer.data})
+
+            return Response({'search_id': search_id, 'data': athletes_data})
 
         elif type == 'scout':
-            scouts = User.objects.filter(Q(first_name__icontains=data) | Q(last_name__icontains=data))
-            serializer = UserSerializer(scouts, many=True)
-            search = Search.objects.create(data=serializer.data)
+            scouts_data = []
+            scouts = CustomUser.objects.filter(Q(first_name__icontains=data) | Q(last_name__icontains=data),
+                                               role='scout')
+
+            scout_details = Scout.objects.filter(username__in=scouts.values_list('username', flat=True))
+
+            for scout in scouts:
+                scout_data = {
+                    'username': scout.username,
+                    'first_name': scout.first_name,
+                    'last_name': scout.last_name,
+                    **scout_details.filter(username=scout.username).values('hometown').first()
+                }
+                scouts_data.append(scout_data)
+
+            search = Search.objects.create(data=scouts_data)
             search_id = search.search_id
-            return Response({'search_id': search_id, 'data': serializer.data})
+
+            return Response({'search_id': search_id, 'data': scouts_data})
 
         elif type == 'organization':
             organizations = Organization.objects.filter(club_name__icontains=data)
@@ -130,4 +161,3 @@ class SearchViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         search = Search.objects.get(pk=kwargs['pk'])
         return Response({'search_id': search.search_id, 'data': search.data})
-
