@@ -43,47 +43,38 @@ class AnalyticsViewSet(viewsets.ModelViewSet):
 
         url = blobstorage.url
 
-        physical_attribute_instance = PhysicalAttribute.objects.filter(username=username).first()
+        if physical_attribute_type == 'sit_up':
+            count = count_situps(url)
+            physical_attribute = {
+                'created_at': timezone.now(),
+                'username': username,
+                'sit_up': count,
+                'height': height,
+            }
+            return Response(physical_attribute, status=status.HTTP_200_OK)
 
-        if physical_attribute_instance:
-            # Physical attribute exists, update it based on the analytic type
-            if physical_attribute_type == 'sit_up':
-                count = count_situps(url)
-                physical_attribute_instance.sit_up = count
+        elif physical_attribute_type == 'push_up':
+            count = count_push_ups(url)
+            physical_attribute = {
+                'created_at': timezone.now(),
+                'username': username,
+                'push_up': count,
+                'height': height,
+            }
+            return Response(physical_attribute, status=status.HTTP_200_OK)
 
-            elif physical_attribute_type == 'push_up':
-                count = count_push_ups(url)
-                physical_attribute_instance.push_up = count
+        elif physical_attribute_type == 'run':
+            speed = calculate_speed(url, height)
+            physical_attribute = {
+                'created_at': timezone.now(),
+                'username': username,
+                'run': speed,
+                'height': height,
+            }
+            serializer = PhysicalAttributeSerializer(data=physical_attribute)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-            elif physical_attribute_type == 'run':
-                speed = calculate_speed(url, height)
-                physical_attribute_instance.run = speed
-                physical_attribute_instance.height = height
-
-            physical_attribute_instance.create_at = timezone.now()
-            physical_attribute_instance.save()
-            serializer = PhysicalAttributeSerializer(instance=physical_attribute_instance)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
-        else:
-            # Physical attribute does not exist, create a new one
-            if physical_attribute_type == 'sit_up':
-                count = count_situps(url)
-
-            elif physical_attribute_type == 'push_up':
-                count = count_push_ups(url)
-
-            elif physical_attribute_type == 'run':
-                speed = calculate_speed(url, height)
-                physical_attribute = {
-                    'created_at': timezone.now(),
-                    'username': username,
-                    'run': speed,
-                    'height': height,
-                }
-                serializer = PhysicalAttributeSerializer(data=physical_attribute)
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response({'message': 'Invalid analytic type. There are only 3 types of analytics: sit_up, push_up, run'},status=status.HTTP_400_BAD_REQUEST)
+        else: 
+            return Response({'message': 'Invalid analytic type. There are only 3 types of analytics: sit_up, push_up, run'},status=status.HTTP_400_BAD_REQUEST)
