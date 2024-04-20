@@ -123,7 +123,7 @@ class EventViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], url_path='calendar/upcoming/')
     def get_upcoming_events(self, request):
         now = datetime.now()
-        events = Event.objects.filter(date_start__month=now.month)
+        events = Event.objects.filter(start_time__month=now.month)
         if not events:
             return Response({'message': 'No events found for the month'}, status=status.HTTP_404_NOT_FOUND)
         
