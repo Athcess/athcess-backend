@@ -61,6 +61,6 @@ urlpatterns = [
     # sit_up
     # http://127.0.0.1:8000/services/analytics/?player_name=cr7&analytic_type=sit_up
     path('analytics/', AnalyticsViewSet.as_view({'get': 'get_analytics'}), name='analytics'),
-    path('friend/', IsFriendOfViewSet.as_view({'post': 'create'}), name='friend'),
+    path('friend/', IsFriendOfViewSet.as_view({'post': 'create', 'get': 'list'}), name='friend'),
     path('friend/<int:pk>/', IsFriendOfViewSet.as_view({'put': 'update'}), name='friend-detail'),
 ]
