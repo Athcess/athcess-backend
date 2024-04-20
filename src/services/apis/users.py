@@ -152,19 +152,19 @@ class UserViewSet(viewsets.ModelViewSet):
         except CustomUser.DoesNotExist:
             return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    def update(self, request, *args, **kwargs):
+    def partial_update(self, request, *args, **kwargs):
         try:
-            username = kwargs.get('pk')
+            username = request.user.username
             role = CustomUser.objects.get(username=username).role
         except CustomUser.DoesNotExist:
             return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         if role == 'athlete':
             instance = Athlete.objects.get(username=username)
-            serializer = AthleteSerializer(instance, data=request.data, context={'request': request})
+            serializer = AthleteSerializer(instance, data=request.data, context={'request': request}, partial=True)
 
         elif role == 'scout':
             instance = Scout.objects.get(username=username)
-            serializer = ScoutSerializer(instance, data=request.data, context={'request': request})
+            serializer = ScoutSerializer(instance, data=request.data, context={'request': request}, partial=True)
 
         else:
             return Response({"message": "Invalid role???"}, status=status.HTTP_400_BAD_REQUEST)
