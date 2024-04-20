@@ -50,15 +50,27 @@ class EventViewSet(viewsets.ModelViewSet):
             return Response(event_serializer.data, status=status.HTTP_201_CREATED)
         return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        updated_content = request.data.get('updated_content')
-        if updated_content:
-            instance.description = updated_content
-            instance.save()
-            serializer = EventSerializer(instance)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({'message': 'Updated Content not provided'}, status=status.HTTP_400_BAD_REQUEST)
+    def update_event_by_id(self, request, *args, **kwargs):
+        event_id = request.data.get('event_id')
+        event = Event.objects.filter(event_id=event_id)
+        if not event:
+            return Response({'message': 'No event found with the given id'}, status=status.HTTP_404_NOT_FOUND)
+        
+        data = {
+            'event_id': request.data.get('event_id'),
+            'club': request.data.get('club'),
+            'content': request.data.get('content'),
+            'created_at': timezone.now(),
+            'description': request.data.get('description'),
+            'start_time': request.data.get('start_time'),
+            'end_time': request.data.get('end_time'),
+            'has_attachment': request.data.get('has_attachment'),
+        }
+        event_serializer = EventSerializer(event, data=data)
+        if event_serializer.is_valid():
+            event_serializer.save()
+            return Response(event_serializer.data, status=status.HTTP_200_OK)
+        return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
