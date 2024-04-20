@@ -97,7 +97,7 @@ class UploadFileViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter(username=request.user.username)
+        queryset = self.get_queryset().all()
         for key, value in request.query_params.items():
             queryset = queryset.filter(**{key: value})
 
