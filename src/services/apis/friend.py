@@ -78,7 +78,6 @@ class IsFriendOfViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = IsFriendOf.objects.all()
         for key, value in request.query_params.items():
-            print(key,value)
             queryset = queryset.filter(**{key: value})
         serializer = IsFriendOfSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
