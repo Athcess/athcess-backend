@@ -13,7 +13,7 @@ from rest_framework_simplejwt.tokens import RefreshToken, Token
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['role', 'username']
+        fields = ['role', 'username', 'first_name', 'last_name']
 
 
 class AthleteSerializer(serializers.ModelSerializer):
@@ -55,6 +55,8 @@ def signup(request):
         auth_serializer = CustomUserSerializer(data={'username': request.data['username'],
                                                      'role': request.data['role'],
                                                      'password': hashed_password,
+                                                     'first_name': request.data['first_name'],
+                                                        'last_name': request.data['last_name'],
                                                      }
                                                )
         if not auth_serializer.is_valid():
