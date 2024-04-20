@@ -17,5 +17,5 @@ class PhysicalAttribute(models.Model):
         db_table = "physical_attribute"
     
     def __str__(self):
-        return (self.date)
+        return ('kuay')
 
