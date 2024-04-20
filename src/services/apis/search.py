@@ -4,11 +4,19 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework import serializers
 from rest_framework.response import Response
+from django.contrib.auth.models import User
+
 
 from ..models.physical_attribute import PhysicalAttribute
 from ..models.post import Post
 from ..models.event import Event
 from users.models.custom_user import CustomUser, Athlete, Scout, Organization
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -63,13 +71,13 @@ class SearchViewSet(viewsets.ModelViewSet):
         data = request.data.get('data', '')
 
         if type == 'athlete':
-            athletes = CustomUser.objects.filter(Q(first_name__icontains=data) | Q(last_name__icontains=data))
-            serializer = CustomUserSerializer(athletes, many=True)
+            athletes = User.objects.filter(Q(first_name__icontains=data) | Q(last_name__icontains=data))
+            serializer = UserSerializer(athletes, many=True)
             return Response(serializer.data)
 
         elif type == 'scout':
-            scouts = CustomUser.objects.filter(Q(first_name__icontains=data) | Q(last_name__icontains=data))
-            serializer = CustomUserSerializer(scouts, many=True)
+            scouts = User.objects.filter(Q(first_name__icontains=data) | Q(last_name__icontains=data))
+            serializer = UserSerializer(scouts, many=True)
             return Response(serializer.data)
 
         elif type == 'organization':
@@ -94,9 +102,17 @@ class SearchViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(**{f'{key}': value})
 
         usernames = list(queryset.values_list('username', flat=True))
-        athletes = CustomUser.objects.filter(username__in=usernames)
+        
+        queryset = Athlete.objects.filter(username__in=usernames)
+        for key, value in request.query_params.items():
+            if key in ['age', 'location', 'position']:
+                queryset = queryset.filter(**{f'{key}': value})
 
-        serializer = CustomUserSerializer(athletes, many=True)
+        athletes = list(queryset.values_list('username', flat=True))
+
+        users = CustomUser.objects.filter(username__in=athletes)
+
+        serializer = CustomUserSerializer(users, many=True)
 
         return Response(serializer.data)
 
