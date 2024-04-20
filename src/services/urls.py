@@ -19,7 +19,7 @@ from .apis.physical_attribute import PhysicalAttributeViewSet
 from .apis.feed import FeedViewSet
 
 urlpatterns = [
-    path('search/', SearchViewSet.as_view({'post': 'search'}), name='search'),
+    path('search/', SearchViewSet.as_view({'post': 'create'}), name='search'),
     path('upload/', UploadFileViewSet.as_view({'post': 'create', 'get': 'list'}), name='upload'),
     path('upload/<int:pk>/', UploadFileViewSet.as_view({'put': 'update', 'get': 'retrieve', 'delete': 'destroy'}),
          name='upload-detail'),
