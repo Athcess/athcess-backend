@@ -35,6 +35,7 @@ urlpatterns = [
     path('calendar/mock/', EventViewSet.as_view({'post': 'generate_mock_events'}), name='calendar-mock'),
     path('calendar/byname/', EventViewSet.as_view({'get': 'get_event_by_organization'}), name='calendar-org'),
     path('calendar/upcoming/', EventViewSet.as_view({'get': 'get_upcoming_events'}), name='calendar-upcoming'),
+    path('calendar/update/', EventViewSet.as_view({'put': 'update_event_by_id'}), name='calendar-update'),
     path('notification/', NotificationViewSet.as_view({'get': 'list'}), name='notification'),
     path('notification/<int:pk>/', NotificationViewSet.as_view({'put': 'update'}), name='notification-detail'),
     path('notification/create/', NotificationViewSet.as_view({'post': 'create'}), name='notification-create'),
