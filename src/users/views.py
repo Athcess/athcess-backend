@@ -110,7 +110,7 @@ def signup(request):
                                                      }
                                                )
             organization_serializer = OrganizationSerializer(data={
-                                                        'username_id': request.data['username'],
+                                                        'username': auth_serializer.data['username'],
                                                         'club_name': request.data['club_name'],
                                                         'location': request.data['location'],
                                                         'followers': '',
