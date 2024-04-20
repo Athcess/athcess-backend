@@ -34,9 +34,6 @@ class FeedViewSet(viewsets.ModelViewSet):
         posts = Post.objects.filter(username__in=friends)  # Posts from friends
         events = Event.objects.filter(club_id__in=following)  # Posts from following users
 
-        # Combine posts and events
-        combined_posts = list(posts) + list(events)
-
         # Serialize the posts
         # Serialize posts and events separately
         post_serializer = PostSerializer(posts, many=True)
