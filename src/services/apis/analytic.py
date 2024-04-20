@@ -60,6 +60,7 @@ class AnalyticsViewSet(viewsets.ModelViewSet):
                 physical_attribute_instance.run = speed
                 physical_attribute_instance.height = height
 
+            physical_attribute_instance.create_at = timezone.now()
             physical_attribute_instance.save()
             serializer = PhysicalAttributeSerializer(instance=physical_attribute_instance)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -75,7 +76,7 @@ class AnalyticsViewSet(viewsets.ModelViewSet):
             elif physical_attribute_type == 'run':
                 speed = calculate_speed(url, height)
                 physical_attribute = {
-                    'create_at': timezone.now(),
+                    'created_at': timezone.now(),
                     'username': username,
                     'run': speed,
                     'height': height,
@@ -86,8 +87,3 @@ class AnalyticsViewSet(viewsets.ModelViewSet):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response({'message': 'Invalid analytic type. There are only 3 types of analytics: sit_up, push_up, run'},status=status.HTTP_400_BAD_REQUEST)
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)

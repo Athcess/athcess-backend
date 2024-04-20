@@ -3,7 +3,7 @@ from users.models.custom_user import CustomUser
 
 
 class PhysicalAttribute(models.Model):
-    create_at = models.DateTimeField(primary_key=True)
+    created_at = models.DateTimeField(primary_key=True)
     username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     height = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)
     weight = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)

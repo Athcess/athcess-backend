@@ -15,6 +15,7 @@ from .apis.repost import RepostViewSet
 from .apis.follow import FollowViewSet
 from .apis.analytic import AnalyticsViewSet
 from .apis.friend import IsFriendOfViewSet
+from .apis.physical_attribute import PhysicalAttributeViewSet
 
 urlpatterns = [
     path('search/', SearchViewSet.as_view({'get': 'search'}), name='search'),
@@ -63,4 +64,9 @@ urlpatterns = [
     path('analytics/', AnalyticsViewSet.as_view({'get': 'get_analytics'}), name='analytics'),
     path('friend/', IsFriendOfViewSet.as_view({'post': 'create', 'get': 'list'}), name='friend'),
     path('friend/<int:pk>/', IsFriendOfViewSet.as_view({'put': 'update'}), name='friend-detail'),
+    path('physical_attribute/', PhysicalAttributeViewSet.as_view({'post': 'create', 'get': 'list'}),
+         name='physical_attribute'),
+    path('physical_attribute/<str:pk>/',
+         PhysicalAttributeViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}),
+         name='physical_attribute-detail'),
 ]
