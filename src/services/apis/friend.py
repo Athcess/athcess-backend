@@ -9,7 +9,7 @@ from django.utils import timezone
 class IsFriendOfSerializer(serializers.ModelSerializer):
     class Meta:
         model = IsFriendOf
-        fields = ['username', 'friend_username', 'status', 'since']
+        fields = ['id', 'username', 'friend_username', 'status', 'since']
 
 
 class IsFriendOfViewSet(viewsets.ModelViewSet):
@@ -45,7 +45,9 @@ class IsFriendOfViewSet(viewsets.ModelViewSet):
 
         serializer.save()
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        response = serializer.data
+
+        return Response(response, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -56,6 +58,7 @@ class IsFriendOfViewSet(viewsets.ModelViewSet):
 
         if request.data['status'] == 'accepted':
             instance.since = timezone.now()
+            instance.status = 'accepted'
             instance.save()
             serializer = IsFriendOfSerializer(data={
                 'username': instance.friend_username.username,
@@ -73,6 +76,9 @@ class IsFriendOfViewSet(viewsets.ModelViewSet):
         return Response({'error': 'Invalid status'}, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request, *args, **kwargs):
-        queryset = IsFriendOf.objects.filter(username=request.user.username)
+        queryset = IsFriendOf.objects.all()
+        for key, value in request.query_params.items():
+            print(key,value)
+            queryset = queryset.filter(**{key: value})
         serializer = IsFriendOfSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
