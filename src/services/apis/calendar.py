@@ -52,8 +52,10 @@ class EventViewSet(viewsets.ModelViewSet):
 
     def update_event_by_id(self, request, *args, **kwargs):
         event_id = request.data.get('event_id')
-        event = Event.objects.filter(event_id=event_id)
-        if not event:
+        
+        try:
+            event = Event.objects.get(event_id=event_id)
+        except Event.DoesNotExist:
             return Response({'message': 'No event found with the given id'}, status=status.HTTP_404_NOT_FOUND)
         
         data = {
@@ -65,7 +67,8 @@ class EventViewSet(viewsets.ModelViewSet):
             'end_time': request.data.get('end_time'),
             'has_attachment': request.data.get('has_attachment'),
         }
-        event_serializer = EventSerializer(event, data=data)
+        
+        event_serializer = EventSerializer(instance=event, data=data)
         if event_serializer.is_valid():
             event_serializer.save()
             return Response(event_serializer.data, status=status.HTTP_200_OK)
