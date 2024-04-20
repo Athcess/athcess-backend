@@ -16,6 +16,7 @@ from .apis.follow import FollowViewSet
 from .apis.analytic import AnalyticsViewSet
 from .apis.friend import IsFriendOfViewSet
 from .apis.physical_attribute import PhysicalAttributeViewSet
+from .apis.feed import FeedViewSet
 
 urlpatterns = [
     path('search/', SearchViewSet.as_view({'get': 'search'}), name='search'),
@@ -44,7 +45,7 @@ urlpatterns = [
     path('organization/<str:org_name>/', OrganizationViewSet.as_view({'get': 'get_by_name'}),
          name='organization-detail'),
     path('achievement/', AchievementViewSets.as_view({'post': 'create', 'get': 'list'}), name='achievement'),
-    path('achievement/<str:pk>/',
+    path('achievement/<int:pk>/',
          AchievementViewSets.as_view({'get': 'retrieve', 'delete': 'destroy', 'put': 'update'}),
          name='achievement-detail'),
     path('achievement/mock/', AchievementViewSets.as_view({'post': 'mock_achievements'}), name='achievement-mock'),
@@ -70,4 +71,5 @@ urlpatterns = [
     path('physical_attribute/<str:pk>/',
          PhysicalAttributeViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}),
          name='physical_attribute-detail'),
+    path('feed/', FeedViewSet.as_view({'get': 'list'}), name='feed'),
 ]
