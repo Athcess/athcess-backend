@@ -58,6 +58,7 @@ class SearchViewSet(viewsets.ModelViewSet):
     serializer_class = CustomUserSerializer
 
     def create(self, request, *args, **kwargs):
+
         type = request.data.get('type')
         data = request.data.get('data', '')
 
