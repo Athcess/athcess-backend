@@ -14,7 +14,7 @@ from users.models.custom_user import CustomUser, Athlete, Scout, Organization
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name']
+        fields = '__all__'
 
 
 class AthleteSerializer(serializers.ModelSerializer):
@@ -92,6 +92,10 @@ class SearchViewSet(viewsets.ModelViewSet):
             if key in ['height', 'weight', 'sit_up', 'push_up', 'run']:
                 queryset = queryset.filter(**{f'{key}': value})
 
-        serializer = PhysicalAttributeSerializer(queryset, many=True)
+        usernames = list(queryset.values_list('username', flat=True))
+        athletes = CustomUser.objects.filter(username__in=usernames)
+
+        serializer = CustomUserSerializer(athletes, many=True)
+
         return Response(serializer.data)
 
