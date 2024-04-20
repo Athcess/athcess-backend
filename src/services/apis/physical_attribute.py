@@ -8,7 +8,7 @@ from django.utils import timezone
 class PhysicalAttributeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PhysicalAttribute
-        fields = ['username', 'created_at', 'height', 'weight', 'fat_mass', 'muscle_mass']
+        fields = ['username', 'created_at', 'height', 'weight', 'fat_mass', 'muscle_mass', 'sit_up', 'push_up', 'run']
 
 
 class PhysicalAttributeViewSet(viewsets.ModelViewSet):
