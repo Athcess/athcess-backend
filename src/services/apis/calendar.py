@@ -57,7 +57,6 @@ class EventViewSet(viewsets.ModelViewSet):
             return Response({'message': 'No event found with the given id'}, status=status.HTTP_404_NOT_FOUND)
         
         data = {
-            'event_id': request.data.get('event_id'),
             'club': request.data.get('club'),
             'content': request.data.get('content'),
             'created_at': timezone.now(),
