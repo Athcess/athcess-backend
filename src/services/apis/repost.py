@@ -18,6 +18,12 @@ class RepostViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         create_at = timezone.now()
+
+        try:
+            Post.objects.get(post_id=request.data['post_id'])
+        except Post.DoesNotExist:
+            return Response({'error': 'Post does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = PostSerializer(data={
                                             'username': request.user.username,
                                             'created_at': create_at,
