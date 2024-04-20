@@ -49,7 +49,6 @@ class AnalyticsViewSet(viewsets.ModelViewSet):
                 'created_at': timezone.now(),
                 'username': username,
                 'sit_up': count,
-                'height': height,
             }
             return Response(physical_attribute, status=status.HTTP_200_OK)
 
@@ -59,7 +58,6 @@ class AnalyticsViewSet(viewsets.ModelViewSet):
                 'created_at': timezone.now(),
                 'username': username,
                 'push_up': count,
-                'height': height,
             }
             return Response(physical_attribute, status=status.HTTP_200_OK)
 
