@@ -51,7 +51,6 @@ class UserViewSet(viewsets.ModelViewSet):
         try:
             username = kwargs.get('pk')
             role = CustomUser.objects.get(username=username).role
-            print(role)
 
             if role == 'athlete':
                 instance = Athlete.objects.get(username=username)
