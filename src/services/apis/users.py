@@ -146,6 +146,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
             response['first_name'] = User.objects.get(username=username).first_name
             response['last_name'] = User.objects.get(username=username).last_name
+            response['role'] = role
 
             return Response(response)
 
