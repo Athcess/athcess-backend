@@ -10,7 +10,6 @@ class PhysicalAttribute(models.Model):
     fat_mass = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
     muscle_mass = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
     run = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
-    run = models.DecimalField(blank=True, null=True, max_digits= 4, decimal_places=2)
     push_up = models.IntegerField(blank=True, null=True)
     sit_up = models.IntegerField(blank=True, null=True)
 
