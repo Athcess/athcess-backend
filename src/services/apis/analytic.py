@@ -20,7 +20,7 @@ class BlobStorageSerializer(serializers.ModelSerializer):
 class PhysicalAttributeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PhysicalAttribute
-        fields = ['create_at', 'username', 'sit_up', 'push_up', 'run']
+        fields = ['created_at', 'username', 'sit_up', 'push_up', 'run']
 
 class AnalyticsViewSet(viewsets.ModelViewSet):
     queryset = BlobStorage.objects.all()
@@ -44,34 +44,28 @@ class AnalyticsViewSet(viewsets.ModelViewSet):
         url = blobstorage.url
 
         if physical_attribute_type == 'sit_up':
-            try:
-                count = count_situps(url)
-                physical_attribute = {
-                    'created_at': timezone.now(),
-                    'username': username,
-                    'sit_up': count,
-                }
-                serializer = PhysicalAttributeSerializer(data=physical_attribute)
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            except Exception as e:
-                return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            count = count_situps(url)
+            physical_attribute = {
+                'created_at': timezone.now(),
+                'username': username,
+                'sit_up': count,
+            }
+            serializer = PhysicalAttributeSerializer(data=physical_attribute)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         elif physical_attribute_type == 'push_up':
-            try:
-                count = count_push_ups(url)
-                physical_attribute = {
-                    'created_at': timezone.now(),
-                    'username': username,
-                    'push_up': count,
-                }
-                serializer = PhysicalAttributeSerializer(data=physical_attribute)
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            except Exception as e:
-                return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            count = count_push_ups(url)
+            physical_attribute = {
+                'created_at': timezone.now(),
+                'username': username,
+                'push_up': count,
+            }
+            serializer = PhysicalAttributeSerializer(data=physical_attribute)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         elif physical_attribute_type == 'run':
             try:
@@ -87,7 +81,7 @@ class AnalyticsViewSet(viewsets.ModelViewSet):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             except Exception as e:
-                return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': e}, status=status.HTTP_400_BAD_REQUEST)
 
         else: 
             return Response({'message': 'Invalid analytic type. There are only 3 types of analytics: sit_up, push_up, run'},status=status.HTTP_400_BAD_REQUEST)
