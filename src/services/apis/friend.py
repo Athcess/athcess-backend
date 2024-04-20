@@ -59,6 +59,8 @@ class IsFriendOfViewSet(viewsets.ModelViewSet):
             return Response({'message': 'Friend request rejected'}, status=status.HTTP_200_OK)
 
         if request.data['status'] == 'accepted':
+            if instance.friend_username != request.user:
+                return Response({'error': 'You cannot accept a friend request that is not yours'}, status=status.HTTP_400_BAD_REQUEST)
             instance.since = timezone.now()
             instance.status = 'accepted'
             instance.save()
