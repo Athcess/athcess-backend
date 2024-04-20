@@ -29,7 +29,7 @@ urlpatterns = [
     path('follow/', FollowViewSet.as_view({'put': 'update'}), name='follow'),
     path('repost/', RepostViewSet.as_view({'post': 'create'}), name='repost'),
     path('like/<int:pk>/', LikeViewSet.as_view({'post': 'like'}), name='like'),
-    path('users/<str:pk>/', UserViewSet.as_view({'get': 'retrieve', 'put': 'update'}), name='user-detail'),
+    path('users/<str:pk>/', UserViewSet.as_view({'get': 'retrieve', 'put': 'partial_update'}), name='user-detail'),
     path('calendar/get/', EventViewSet.as_view({'get': 'list'}), name='calendar-get'),
     path('calendar/', EventViewSet.as_view({'post': 'create'}), name='calendar'),
     path('calendar/<int:pk>/', EventViewSet.as_view({'put': 'update', 'delete': 'destroy', 'get': 'retrieve'}),
