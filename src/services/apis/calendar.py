@@ -79,6 +79,12 @@ class EventViewSet(viewsets.ModelViewSet):
         instance.delete()
         return Response({'message': 'Event deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
     def generate_mock_events(self, request, *args, **kwargs):
         num_events = request.data.get('num_events', 10) 
         events_data = mock_event_data(num_events=num_events)
