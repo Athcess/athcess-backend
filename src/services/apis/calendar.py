@@ -54,7 +54,7 @@ class EventViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         updated_content = request.data.get('updated_content')
         if updated_content:
-            instance.content = updated_content
+            instance.description = updated_content
             instance.save()
             serializer = EventSerializer(instance)
             return Response(serializer.data, status=status.HTTP_200_OK)
