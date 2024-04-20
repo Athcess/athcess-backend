@@ -20,6 +20,8 @@ from .apis.feed import FeedViewSet
 
 urlpatterns = [
     path('search/', SearchViewSet.as_view({'post': 'create'}), name='search'),
+    path('search/<int:pk>/', SearchViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}),
+         name='search-detail'),
     path('upload/', UploadFileViewSet.as_view({'post': 'create', 'get': 'list'}), name='upload'),
     path('upload/<int:pk>/', UploadFileViewSet.as_view({'put': 'update', 'get': 'retrieve', 'delete': 'destroy'}),
          name='upload-detail'),
