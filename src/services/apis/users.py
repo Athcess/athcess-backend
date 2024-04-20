@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from users.models.custom_user import CustomUser, Athlete, Scout, Admin_organization
+from users.models.custom_user import CustomUser, Athlete, Scout, Admin_organization, Organization
 from ..models.blob_storage import BlobStorage
 from ..models.achievement import Achievement
 from ..models.experience import Experience
@@ -51,6 +51,7 @@ class UserViewSet(viewsets.ModelViewSet):
         try:
             username = kwargs.get('pk')
             role = CustomUser.objects.get(username=username).role
+            print(role)
 
             if role == 'athlete':
                 instance = Athlete.objects.get(username=username)
@@ -60,6 +61,11 @@ class UserViewSet(viewsets.ModelViewSet):
             elif role == 'scout':
                 instance = Scout.objects.get(username=username)
                 serializer = ScoutSerializer(instance, context={'request': request})
+                response = serializer.data
+
+            elif role == 'admin':
+                instance = Admin_organization.objects.get(username=username)
+                serializer = AdminSerializer(instance, context={'request': request})
                 response = serializer.data
 
             else:
@@ -124,6 +130,19 @@ class UserViewSet(viewsets.ModelViewSet):
                     ]
                 except PhysicalAttribute.DoesNotExist:
                     response['physical_attribute'] = None
+
+            # get organization
+            if role == 'admin':
+                try:
+                    organization = Organization.objects.get(username=username)
+                    response['organization'] = {
+                        'club_name': organization.club_name,
+                        'location': organization.location,
+                        'followers': organization.followers,
+                        'approved': organization.approved
+                    }
+                except Organization.DoesNotExist:
+                    response['organization'] = None
 
             response['first_name'] = User.objects.get(username=username).first_name
             response['last_name'] = User.objects.get(username=username).last_name
