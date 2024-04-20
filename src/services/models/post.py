@@ -9,6 +9,7 @@ class Post(models.Model):
     created_at = models.DateTimeField()
     description = models.TextField()
     has_attachment = models.BooleanField()
+    is_repost = models.BooleanField(default=False)
     likes = models.TextField(default='')  # Field to store a comma-separated list of usernames
     highlight = models.BooleanField(default=False)
 
