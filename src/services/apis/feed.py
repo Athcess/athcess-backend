@@ -4,11 +4,19 @@ from ..models.is_friend_of import IsFriendOf
 from rest_framework import viewsets, status, permissions, serializers
 from rest_framework.response import Response
 from django.utils import timezone
+from ..models.event import Event
+
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['post_id', 'username', 'created_at', 'description', 'has_attachment', 'highlight', 'is_repost']
+
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = '__all__'
 
 
 class FeedViewSet(viewsets.ModelViewSet):
@@ -18,17 +26,25 @@ class FeedViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         # Retrieve friends and following
-        friends = IsFriendOf.objects.filter(username=request.user).values_list('friend__username', flat=True)
+        friends = IsFriendOf.objects.filter(username=CustomUser.objects.get(username=request.user.username)).values_list('username', flat=True)
+
         following = CustomUser.objects.get(username=request.user).following.split(',')
 
         # Retrieve posts from friends and following users
         posts = Post.objects.filter(username__in=friends)  # Posts from friends
-        events = Post.objects.filter(username__in=following)  # Posts from following users
+        events = Event.objects.filter(club_id__in=following)  # Posts from following users
 
         # Combine posts and events
-        combined_posts = posts.union(events)
+        combined_posts = list(posts) + list(events)
 
         # Serialize the posts
-        serializer = PostSerializer(combined_posts, many=True)
+        # Serialize posts and events separately
+        post_serializer = PostSerializer(posts, many=True)
+        event_serializer = EventSerializer(events, many=True)
 
-        return Response(serializer.data)
+        # Combine serialized data into a single response data
+        response_data = {
+            'posts': post_serializer.data,
+            'events': event_serializer.data
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
