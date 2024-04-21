@@ -1,5 +1,6 @@
 from users.models.custom_user import CustomUser, Athlete, Scout, Admin_organization, Organization
 from ..models.post import Post
+from ..models.blob_storage import BlobStorage
 from rest_framework import viewsets, status, permissions, serializers
 from rest_framework.response import Response
 from django.utils import timezone
@@ -57,4 +58,13 @@ class FollowViewSet(viewsets.ViewSet):
     def retrieve(self, request, *args, **kwargs):
         user = CustomUser.objects.get(username=request.user)
         following_list = user.following.split(',') if user.following else []
-        return Response({'following': following_list}, status=status.HTTP_200_OK)
+        followings = []
+        for i in following_list:
+            organization = Organization.objects.get(club_name=i).username
+            try:
+                url = BlobStorage.objects.get(username=organization.username.username, is_profile_picture=True).url
+            except:
+                url = None
+            followings.append({'club_name': i, 'url': url})
+
+        return Response({'following': followings}, status=status.HTTP_200_OK)
