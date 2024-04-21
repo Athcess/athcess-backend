@@ -1,7 +1,10 @@
 import os
 from .settings import *
 from .settings import BASE_DIR
+from dotenv import load_dotenv
+load_dotenv()
 
+SECRET_KEY = os.getenv['SECRET']
 ALLOWED_HOSTS = [os.environ('WEBSITE_HOSTNAME')]
 CSRF_TRUSTED_ORIGINS = ['https://' + os.environ('WEBSITE_HOSTNAME')]
 DEBUG = False
@@ -33,22 +36,6 @@ DATABASES = {
         'PASSWORD': parameters['password'],
     }
 }
-
-from pathlib import Path
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-e0*&5n8o4kq%#f5i6s5$cm()9*3v@$ry$4=)stj!4yv%ii*8%y"
-
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:5173',
