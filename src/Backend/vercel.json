@@ -1,11 +1,13 @@
 {
     "builds": [
       {
-        "src": "Backend/wsgi.py",
+        "src": "Backend/",
         "use": "@vercel/python",
         "config": {
           "maxLambdaSize": "15mb",
-          "runtime": "python3.10"
+          "runtime": "python3.10",
+          "buildCommand": "pip install -r requirements.txt",
+          "outputDirectory": "Backend/"
         }
       }
     ],
