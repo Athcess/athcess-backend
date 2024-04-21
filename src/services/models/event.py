@@ -15,6 +15,9 @@ class Event(models.Model):
 
     class Meta:
         db_table = "event"
+        indexes = [
+            models.Index(fields=['event_id', 'club']),
+        ]
 
     def __str__(self):
         return f"Event ID: {self.event_id}"
