@@ -26,6 +26,9 @@ class BlobStorage(models.Model):
 
     class Meta:
         db_table = "blob_storage"
+        indexes = [
+            models.Index(fields=['blob_id', 'username']),
+        ]
 
     def __str__(self):
         return f"BlobStorage object: {self.blob_id}"
