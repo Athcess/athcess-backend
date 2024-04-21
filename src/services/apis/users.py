@@ -114,7 +114,7 @@ class UserViewSet(viewsets.ModelViewSet):
             # physical attribute
             if role == 'athlete':
                 try:
-                    physical_attributes = PhysicalAttribute.objects.get(username=username)
+                    physical_attributes = PhysicalAttribute.objects.filter(username=username)
                     response['physical_attribute'] = [
                         {
                             'height': physical_attribute.height,
