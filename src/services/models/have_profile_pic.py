@@ -9,6 +9,9 @@ class HaveProfilePic(models.Model):
 
     class Meta:
         db_table = "have_profilepic"
+        indexes = [
+            models.Index(fields=['username', 'profile_picture']),
+        ]
 
     def __str__(self):
         return f"{self.User_ID} has {self.Object_ID}'s profile picture"
