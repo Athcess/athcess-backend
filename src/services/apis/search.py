@@ -139,15 +139,17 @@ class SearchViewSet(viewsets.ModelViewSet):
 
         queryset = Athlete.objects.all()
         for key, value in filters.items():
-            if key in ['age', 'hometown', 'position']:
-                queryset = queryset.filter(**{f'{key}': value})
+            if value != '':
+                if key in ['age', 'hometown', 'position']:
+                    queryset = queryset.filter(**{f'{key}': value})
 
         athletes = list(queryset.values_list('username', flat=True))
 
         queryset = PhysicalAttribute.objects.filter(username__in=athletes)
         for key, value in filters.items():
-            if key in ['height', 'weight', 'sit_up', 'push_up', 'run']:
-                queryset = queryset.filter(**{f'{key}': value})
+            if value != '':
+                if key in ['height', 'weight', 'sit_up', 'push_up', 'run']:
+                    queryset = queryset.filter(**{f'{key}': value})
 
         usernames = list(queryset.values_list('username', flat=True))
 
