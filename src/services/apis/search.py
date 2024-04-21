@@ -137,21 +137,21 @@ class SearchViewSet(viewsets.ModelViewSet):
         if filters and not tier:
             return Response({'error': 'You are not allowed to use filters'}, status=status.HTTP_403_FORBIDDEN)
 
-        queryset = PhysicalAttribute.objects.all()
-        for key, value in filters.items():
-            if key in ['height', 'weight', 'sit_up', 'push_up', 'run']:
-                queryset = queryset.filter(**{f'{key}': value})
-
-        usernames = list(queryset.values_list('username', flat=True))
-
-        queryset = Athlete.objects.filter(username__in=usernames)
+        queryset = Athlete.objects.all()
         for key, value in filters.items():
             if key in ['age', 'location', 'position']:
                 queryset = queryset.filter(**{f'{key}': value})
 
         athletes = list(queryset.values_list('username', flat=True))
 
-        users = CustomUser.objects.filter(username__in=athletes)
+        queryset = PhysicalAttribute.objects.filter(username__in=athletes)
+        for key, value in filters.items():
+            if key in ['height', 'weight', 'sit_up', 'push_up', 'run']:
+                queryset = queryset.filter(**{f'{key}': value})
+
+        usernames = list(queryset.values_list('username', flat=True))
+
+        users = CustomUser.objects.filter(username__in=usernames)
 
         serializer = CustomUserSerializer(users, many=True)
         search = Search.objects.create(data=serializer.data)
