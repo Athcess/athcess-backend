@@ -40,7 +40,7 @@ class ScoutSerializer(serializers.ModelSerializer):
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
-        fields = ['club_name', 'location', 'followers']
+        fields = ['username', 'club_name', 'location', 'followers']
 
 
 class PostSerializer(serializers.ModelSerializer):
