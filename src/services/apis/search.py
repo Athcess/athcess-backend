@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from ..models.physical_attribute import PhysicalAttribute
 from ..models.post import Post
 from ..models.event import Event
+from ..models.blob_storage import BlobStorage
 from users.models.custom_user import CustomUser, Athlete, Scout, Organization
 from ..models.search import Search
 
@@ -78,11 +79,13 @@ class SearchViewSet(viewsets.ModelViewSet):
             )
 
             athletes_data = [{
-                                 'username': athlete.username,
-                                 'first_name': athlete.first_name,
-                                 'last_name': athlete.last_name,
-                                 **(Athlete.objects.filter(username=athlete.username).values('age', 'hometown',
-                                                                                            'position').first() or {})
+                'username': athlete.username,
+                'first_name': athlete.first_name,
+                'last_name': athlete.last_name,
+                'url': BlobStorage.objects.filter(username=athlete.username, is_profile_picture=True).values_list('url',
+                                                                                                                  flat=True).first(),
+                **(Athlete.objects.filter(username=athlete.username).values('age', 'hometown',
+                                                                            'position').first() or {})
             } for athlete in athletes]
 
             search = Search.objects.create(data=athletes_data)
@@ -91,7 +94,6 @@ class SearchViewSet(viewsets.ModelViewSet):
             return Response({'search_id': search_id, 'data': athletes_data})
 
         elif type == 'scout':
-            scouts_data = []
             scouts = CustomUser.objects.filter(Q(first_name__icontains=data) | Q(last_name__icontains=data),
                                                role='scout')
 
@@ -99,8 +101,10 @@ class SearchViewSet(viewsets.ModelViewSet):
                 'username': scout.username,
                 'first_name': scout.first_name,
                 'last_name': scout.last_name,
+                'url': BlobStorage.objects.filter(username=scout.username, is_profile_picture=True).values_list('url',
+                                                                                                                flat=True).first(),
                 **(Athlete.objects.filter(username=scout.username).values('age', 'hometown',
-                                                                            'position').first() or {})
+                                                                          'position').first() or {})
             } for scout in scouts]
 
             search = Search.objects.create(data=scouts_data)
@@ -111,18 +115,37 @@ class SearchViewSet(viewsets.ModelViewSet):
         elif type == 'organization':
             organizations = Organization.objects.filter(club_name__icontains=data)
             serializer = OrganizationSerializer(organizations, many=True)
-            search = Search.objects.create(data=serializer.data)
+
+            response_organization = []
+            for i in serializer.data:
+                url = BlobStorage.objects.filter(
+                    username=Organization.objects.get(club_name=i['club']).username.username,
+                    is_profile_picture=True).values_list('url', flat=True).first()
+                i['url'] = url
+                response_organization.append(i)
+
+            search = Search.objects.create(data=response_organization)
             search_id = search.search_id
-            return Response({'search_id': search_id, 'data': serializer.data})
+            return Response({'search_id': search_id, 'data': response_organization})
 
         elif type == 'post':
             posts = Post.objects.filter(description__icontains=data)
             serializer = PostSerializer(posts, many=True)
+
+            response_post = []
+            for i in serializer.data:
+                url = BlobStorage.objects.filter(username=i['username'], is_profile_picture=True).values_list('url',
+                                                                                                                    flat=True).first()
+                i['url'] = url
+                response_post.append(i)
+
             search = Search.objects.create(data=serializer.data)
             search_id = search.search_id
             return Response({'search_id': search_id, 'data': serializer.data})
-
-        tier = Scout.objects.get(username=request.user.username).tier
+        try:
+            tier = Scout.objects.get(username=request.user.username).tier
+        except Scout.DoesNotExist:
+            tier = None
         filters = request.data.get('filters', {})
 
         if filters and not tier:
@@ -147,6 +170,15 @@ class SearchViewSet(viewsets.ModelViewSet):
         users = CustomUser.objects.filter(username__in=usernames)
 
         serializer = CustomUserSerializer(users, many=True)
+        users = []
+        for i in serializer.data:
+            url = BlobStorage.objects.filter(username=i['username'], is_profile_picture=True).values_list('url',
+                                                                                                            flat=True).first()
+            i['url'] = url
+            users.append(i)
+
+
+
         search = Search.objects.create(data=serializer.data)
         search_id = search.search_id
         return Response({'search_id': search_id, 'data': serializer.data})
