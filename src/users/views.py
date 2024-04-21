@@ -8,12 +8,14 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken, Token
+from services.models.physical_attribute import PhysicalAttribute
+from django.utils import timezone
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['role', 'username']
+        fields = ['role', 'username', 'first_name', 'last_name']
 
 
 class AthleteSerializer(serializers.ModelSerializer):
@@ -55,6 +57,8 @@ def signup(request):
         auth_serializer = CustomUserSerializer(data={'username': request.data['username'],
                                                      'role': request.data['role'],
                                                      'password': hashed_password,
+                                                     'first_name': request.data['first_name'],
+                                                        'last_name': request.data['last_name'],
                                                      }
                                                )
         if not auth_serializer.is_valid():
@@ -84,6 +88,7 @@ def signup(request):
             if athlete_serializer.is_valid():
                 athlete_serializer.save()
                 response['athlete'] = athlete_serializer.data
+                PhysicalAttribute.objects.create(username=CustomUser.objects.get(username=request.data['username']), created_at=timezone.now())
 
         if auth_serializer.data['role'] == 'scout':
             serializer_data = {'username': auth_serializer.data['username'],

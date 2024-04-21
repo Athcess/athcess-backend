@@ -30,6 +30,9 @@ class Comment(models.Model):
 
     class Meta:
         db_table = "comment"
+        indexes = [
+            models.Index(fields=['comment_id', 'username']),
+        ]
 
     def __str__(self):
         return f"Comment ID: {self.comment_id}"

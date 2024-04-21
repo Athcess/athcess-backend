@@ -1,174 +1,165 @@
+from django.db.models import Q
 from rest_framework.decorators import api_view
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework import status
 from rest_framework import serializers
 from rest_framework.response import Response
-from rest_framework.decorators import action
-from django.db.models import Q
+from django.contrib.auth.models import User
+
 from ..models.physical_attribute import PhysicalAttribute
 from ..models.post import Post
 from ..models.event import Event
 from users.models.custom_user import CustomUser, Athlete, Scout, Organization
+from ..models.search import Search
 
-class CustomUserSerializer(serializers.ModelSerializer) :
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name']
+
+
+class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name']
+        fields = '__all__'
 
-class AthleteSerializer(serializers.ModelSerializer) :
+
+class AthleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Athlete
         fields = '__all__'
 
-class ScoutSerializer(serializers.ModelSerializer) :
+
+class ScoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Scout
         fields = '__all__'
 
-class OrganizationSerializer(serializers.ModelSerializer) :
+
+class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
-        fields = '__all__'
+        fields = ['username', 'club_name', 'location', 'followers']
 
-class PostSerializer(serializers.ModelSerializer) :
+
+class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = '__all__'
 
-class EventSerializer(serializers.ModelSerializer) :
+
+class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = '__all__'
 
-class SearchViewSet(viewsets.ModelViewSet) :
-    querysetPost = Post.objects.all()
-    serializerPost = PostSerializer
 
-    querysetAthlete = Athlete.objects.all()
-    serializerAthlete = AthleteSerializer
-
-    querysetOrg = Organization.objects.all()
-    serializerOrg = OrganizationSerializer
-
-    querysetScout = Scout.objects.all()
-    serializerScout = ScoutSerializer
-
-    querysetUser = CustomUser.objects.all()
-    serializerUser = CustomUserSerializer
-
-    querysetEvent = Event.objects.all()
-    serializerEvent = EventSerializer
-
-
-    @action(detail=False, methods=['get'])
-    def search(self, request) :
-        search_type = request.data['type']
-        search_filter = request.data['filter']
-        search_desc = request.data['search_info']
-        if not search_desc or not search_type :
-            return Response('Input value please', status=status.HTTP_400_BAD_REQUEST)
-        if search_type == 'Post' :
-            querysetPost = Post.objects.all().filter(Q(description__icontains=search_desc) 
-            | Q(username__first_name__icontains=search_desc) | Q(username__last_name__icontains=search_desc))
-            serializer = PostSerializer(querysetPost, many=True, data=querysetPost)
-        elif search_type == 'Athlete' :
-            tage = search_filter.get('age')
-            tlocation = search_filter.get('hometown')
-            filters = {}
-            if tage:
-                filters['age'] = tage
-            if tlocation:
-                filters['hometown'] = tlocation
-            if search_desc.isdigit() :
-                querysetAthlete = Athlete.objects.filter(Q(age__exact=search_desc), **filters)
-            else :
-                querysetAthlete = Athlete.objects.filter(Q(hometown__icontains=search_desc) | Q(position=search_desc) 
-                | Q(username__first_name__icontains=search_desc)| Q(username__last_name__icontains=search_desc), **filters)
-            serializer = AthleteSerializer(querysetAthlete, many=True, data=querysetAthlete)
-        elif search_type == 'Scout' :
-            tage = search_filter.get('age')
-            tlocation = search_filter.get('hometown')
-            filters = {}
-            if tage:
-                filters['age'] = tage
-            if tlocation:
-                filters['hometown'] = tlocation
-            querysetScout = Scout.objects.filter((Q(hometown__icontains=search_desc))
-            | Q(username__first_name__icontains=search_desc) | Q(username__last_name__icontains=search_desc), **filters)
-            serializer = ScoutSerializer(querysetScout, many=True, data=querysetScout)
-        elif search_type == 'Organization' :
-            tage = search_filter.get('age')       
-            tlocation = search_filter.get('location')
-            filters = {}
-            if tage:
-                filters['age'] = tage
-            if tlocation:
-                filters['hometown'] = tlocation
-            querysetOrg = Organization.objects.filter(club_name__icontains=search_desc, **filters)
-            serializer = OrganizationSerializer(querysetOrg, many=True, data=querysetOrg)
-        elif search_type == 'Event' :
-            tage = search_filter.get('age')
-            tlocation = search_filter.get('hometown')
-            filters = {}
-            if tage:
-                filters['age'] = tage
-            if tlocation:
-                filters['hometown'] = tlocation
-            querysetEvent = Event.objects.filter((Q(content__icontains=search_desc) | Q(created_at__exact=search_desc)), **filters)
-            serializer = AthleteSerializer(querysetEvent, many=True, data=querysetEvent)
-        if serializer.is_valid() :
-            return Response(serializer.data)
-        else :
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class UserSerializer(serializers.ModelSerializer) :
-    class Meta:
-        model = CustomUser
-        fields = '__all__'
-
-class PhysicalAttributeSerializer(serializers.ModelSerializer) :
+class PhysicalAttributeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PhysicalAttribute
         fields = '__all__'
 
-class PostSerializer(serializers.ModelSerializer) :
-    class Meta:
-        model = Post
-        fields = '__all__'
 
-class SearchViewSet(viewsets.ModelViewSet) :
-    querysetPost = Post.objects.all()
-    serializerPost = PostSerializer
+class SearchViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-    querysetUser = CustomUser.objects.all()
-    serializerUser = UserSerializer
+    def create(self, request, *args, **kwargs):
 
-    @action(detail=False, methods=['get'])
-    def search(self, request) :
-        # query_params = request.query_params
-        # search_desc = query_params.get('Description')
-        search_type = request.data['type']
-        search_filter = request.data['filter']
-        search_desc = request.data['search_info']
-        # seach_model = [Post, Athlete, Scout, Organization, Events]
-        if not search_desc or not search_type :
-            return Response('Input value please', status=status.HTTP_400_BAD_REQUEST)
-        if search_type == 'Post' :
-            querysetPost = Post.objects.all().filter(Description__icontains=search_desc)
-            serializer = PostSerializer(querysetPost, many=True)
-        elif search_type == 'User' :
-            tage = search_filter.get('age')
-            tsport = search_filter.get('sport')
-            tlocation = search_filter.get('location')
-            filters = {}
-            if tage:
-                filters['age'] = tage
-            if tsport:
-                filters['sport'] = tsport
-            if tlocation:
-                filters['location'] = tlocation
-            querysetUser = User.objects.filter(**filters, name__icontains=search_desc)
-            serializer = UserSerializer(querysetUser, many=True)
-        return Response(serializer.data)
+        type = request.data.get('type')
+        data = request.data.get('data', '')
 
-    
+        if type == 'athlete':
+            athletes_data = []
+
+            athletes = CustomUser.objects.filter(
+                Q(first_name__icontains=data) | Q(last_name__icontains=data),
+                role='athlete'
+            )
+
+            athlete_details = Athlete.objects.filter(username__in=athletes.values_list('username', flat=True))
+
+            for athlete in athletes:
+                athlete_data = {
+                    'username': athlete.username,
+                    'first_name': athlete.first_name,
+                    'last_name': athlete.last_name,
+                    **athlete_details.filter(username=athlete.username).values('age', 'hometown', 'position').first()
+                }
+
+                athletes_data.append(athlete_data)
+
+            search = Search.objects.create(data=athletes_data)
+            search_id = search.search_id
+
+            return Response({'search_id': search_id, 'data': athletes_data})
+
+        elif type == 'scout':
+            scouts_data = []
+            scouts = CustomUser.objects.filter(Q(first_name__icontains=data) | Q(last_name__icontains=data),
+                                               role='scout')
+
+            scout_details = Scout.objects.filter(username__in=scouts.values_list('username', flat=True))
+
+            for scout in scouts:
+                scout_data = {
+                    'username': scout.username,
+                    'first_name': scout.first_name,
+                    'last_name': scout.last_name,
+                    **scout_details.filter(username=scout.username).values('hometown').first()
+                }
+                scouts_data.append(scout_data)
+
+            search = Search.objects.create(data=scouts_data)
+            search_id = search.search_id
+
+            return Response({'search_id': search_id, 'data': scouts_data})
+
+        elif type == 'organization':
+            organizations = Organization.objects.filter(club_name__icontains=data)
+            serializer = OrganizationSerializer(organizations, many=True)
+            search = Search.objects.create(data=serializer.data)
+            search_id = search.search_id
+            return Response({'search_id': search_id, 'data': serializer.data})
+
+        elif type == 'post':
+            posts = Post.objects.filter(description__icontains=data)
+            serializer = PostSerializer(posts, many=True)
+            search = Search.objects.create(data=serializer.data)
+            search_id = search.search_id
+            return Response({'search_id': search_id, 'data': serializer.data})
+
+        tier = Scout.objects.get(username=request.user.username).tier
+        filters = request.data.get('filters', {})
+
+        if filters and not tier:
+            return Response({'error': 'You are not allowed to use filters'}, status=status.HTTP_403_FORBIDDEN)
+
+        queryset = Athlete.objects.all()
+        for key, value in filters.items():
+            if value != '':
+                if key in ['age', 'hometown', 'position']:
+                    queryset = queryset.filter(**{f'{key}': value})
+
+        athletes = list(queryset.values_list('username', flat=True))
+
+        queryset = PhysicalAttribute.objects.filter(username__in=athletes)
+        for key, value in filters.items():
+            if value != '':
+                if key in ['height', 'weight', 'sit_up', 'push_up', 'run']:
+                    queryset = queryset.filter(**{f'{key}': value})
+
+        usernames = list(queryset.values_list('username', flat=True))
+
+        users = CustomUser.objects.filter(username__in=usernames)
+
+        serializer = CustomUserSerializer(users, many=True)
+        search = Search.objects.create(data=serializer.data)
+        search_id = search.search_id
+        return Response({'search_id': search_id, 'data': serializer.data})
+
+    def retrieve(self, request, *args, **kwargs):
+        search = Search.objects.get(pk=kwargs['pk'])
+        return Response({'search_id': search.search_id, 'data': search.data})

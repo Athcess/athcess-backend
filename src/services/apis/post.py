@@ -23,8 +23,8 @@ class PostViewSet(viewsets.ModelViewSet):
                                             'description': request.data['description'],
                                             'has_attachment': request.data['has_attachment'],
                                             'highlight': request.data['highlight'],
-                                            'is_repost': request.data['is_repost']
-                                            if request.data['is_repost'] else False
+                                            'is_repost': False
+
                                           })
 
         if not serializer.is_valid():

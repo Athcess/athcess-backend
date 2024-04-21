@@ -15,7 +15,10 @@ class PhysicalAttribute(models.Model):
 
     class Meta:
         db_table = "physical_attribute"
+        indexes = [
+            models.Index(fields=['created_at', 'username']),
+        ]
     
     def __str__(self):
-        return (self.date)
+        return ('kuay')
 

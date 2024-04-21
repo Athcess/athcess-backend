@@ -53,10 +53,14 @@ class IsFriendOfViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
 
         if request.data['status'] == 'rejected':
+            if instance.status == 'accepted':
+                return Response({'error': 'You are already friends'}, status=status.HTTP_400_BAD_REQUEST)
             instance.delete()
             return Response({'message': 'Friend request rejected'}, status=status.HTTP_200_OK)
 
         if request.data['status'] == 'accepted':
+            if instance.friend_username.username != request.user.username:
+                return Response({'error': 'You cannot accept a friend request that is not yours'}, status=status.HTTP_400_BAD_REQUEST)
             instance.since = timezone.now()
             instance.status = 'accepted'
             instance.save()

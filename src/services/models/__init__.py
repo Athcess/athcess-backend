@@ -15,3 +15,4 @@ from .is_friend_of import IsFriendOf
 from .achievement import Achievement
 from .experience import Experience
 from .physical_attribute import PhysicalAttribute
+from .search import Search

@@ -16,25 +16,30 @@ from .apis.follow import FollowViewSet
 from .apis.analytic import AnalyticsViewSet
 from .apis.friend import IsFriendOfViewSet
 from .apis.physical_attribute import PhysicalAttributeViewSet
+from .apis.feed import FeedViewSet
 
 urlpatterns = [
-    path('search/', SearchViewSet.as_view({'get': 'search'}), name='search'),
+    path('search/', SearchViewSet.as_view({'post': 'create'}), name='search'),
+    path('search/<int:pk>/', SearchViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}),
+         name='search-detail'),
     path('upload/', UploadFileViewSet.as_view({'post': 'create', 'get': 'list'}), name='upload'),
     path('upload/<int:pk>/', UploadFileViewSet.as_view({'put': 'update', 'get': 'retrieve', 'delete': 'destroy'}),
          name='upload-detail'),
     path('post/', PostViewSet.as_view({'post': 'create', 'get': 'list'}), name='post'),
     path('post/<int:pk>/', PostViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}),
          name='post-detail'),
-    path('follow/', FollowViewSet.as_view({'put': 'update'}), name='follow'),
+    path('follow/', FollowViewSet.as_view({'put': 'update', 'get': 'retrieve'}), name='follow'),
     path('repost/', RepostViewSet.as_view({'post': 'create'}), name='repost'),
     path('like/<int:pk>/', LikeViewSet.as_view({'post': 'like'}), name='like'),
-    path('users/<str:pk>/', UserViewSet.as_view({'get': 'retrieve', 'put': 'update'}), name='user-detail'),
+    path('users/<str:pk>/', UserViewSet.as_view({'get': 'retrieve', 'put': 'partial_update'}), name='user-detail'),
     path('calendar/get/', EventViewSet.as_view({'get': 'list'}), name='calendar-get'),
     path('calendar/', EventViewSet.as_view({'post': 'create'}), name='calendar'),
-    path('calendar/<int:pk>/', EventViewSet.as_view({'put': 'update', 'delete': 'destroy'}), name='calendar-detail'),
+    path('calendar/<int:pk>/', EventViewSet.as_view({'put': 'update', 'delete': 'destroy', 'get': 'retrieve'}),
+         name='calendar-detail'),
     path('calendar/mock/', EventViewSet.as_view({'post': 'generate_mock_events'}), name='calendar-mock'),
     path('calendar/byname/', EventViewSet.as_view({'get': 'get_event_by_organization'}), name='calendar-org'),
     path('calendar/upcoming/', EventViewSet.as_view({'get': 'get_upcoming_events'}), name='calendar-upcoming'),
+    path('calendar/update/', EventViewSet.as_view({'put': 'update_event_by_id'}), name='calendar-update'),
     path('notification/', NotificationViewSet.as_view({'get': 'list'}), name='notification'),
     path('notification/<int:pk>/', NotificationViewSet.as_view({'put': 'update'}), name='notification-detail'),
     path('notification/create/', NotificationViewSet.as_view({'post': 'create'}), name='notification-create'),
@@ -43,7 +48,7 @@ urlpatterns = [
     path('organization/<str:org_name>/', OrganizationViewSet.as_view({'get': 'get_by_name'}),
          name='organization-detail'),
     path('achievement/', AchievementViewSets.as_view({'post': 'create', 'get': 'list'}), name='achievement'),
-    path('achievement/<str:pk>/',
+    path('achievement/<int:pk>/',
          AchievementViewSets.as_view({'get': 'retrieve', 'delete': 'destroy', 'put': 'update'}),
          name='achievement-detail'),
     path('achievement/mock/', AchievementViewSets.as_view({'post': 'mock_achievements'}), name='achievement-mock'),
@@ -69,4 +74,5 @@ urlpatterns = [
     path('physical_attribute/<str:pk>/',
          PhysicalAttributeViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}),
          name='physical_attribute-detail'),
+    path('feed/', FeedViewSet.as_view({'get': 'list'}), name='feed'),
 ]
