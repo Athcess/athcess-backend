@@ -72,7 +72,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
             # profile picture
             try:
-                profile_picture_url = BlobStorage.objects.get(username=username, is_profile_picture=True).url
+                profile_picture_url = BlobStorage.objects.filter(username=username, is_profile_picture=True).latest(
+                    'created_at').url
                 response['profile_picture'] = profile_picture_url
             except BlobStorage.DoesNotExist:
                 response['profile_picture'] = None
