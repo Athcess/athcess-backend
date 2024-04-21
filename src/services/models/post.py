@@ -33,6 +33,9 @@ class Post(models.Model):
 
     class Meta:
         db_table = "post"
+        indexes = [
+            models.Index(fields=['post_id', 'username', 'description']),
+        ]
 
     def __str__(self):
         return f"Post ID: {self.post_id}"
