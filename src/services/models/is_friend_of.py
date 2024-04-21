@@ -12,6 +12,9 @@ class IsFriendOf(models.Model):
 
     class Meta:
         db_table = "is_friend_of"
+        indexes = [
+            models.Index(fields=['id', 'username', 'friend_username']),
+        ]
     
     def __str__(self):
         return str(self.id)
