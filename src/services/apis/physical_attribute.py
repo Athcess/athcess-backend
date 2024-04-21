@@ -15,6 +15,7 @@ class PhysicalAttributeViewSet(viewsets.ModelViewSet):
     queryset = PhysicalAttribute.objects.all()
     serializer_class = PhysicalAttributeSerializer
     permission_classes = [permissions.IsAuthenticated]
+
     def create(self, request, *args, **kwargs):
         created_at = timezone.now()
         serializer = PhysicalAttributeSerializer(data={
