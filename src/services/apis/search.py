@@ -139,7 +139,7 @@ class SearchViewSet(viewsets.ModelViewSet):
 
         queryset = Athlete.objects.all()
         for key, value in filters.items():
-            if key in ['age', 'location', 'position']:
+            if key in ['age', 'hometown', 'position']:
                 queryset = queryset.filter(**{f'{key}': value})
 
         athletes = list(queryset.values_list('username', flat=True))
