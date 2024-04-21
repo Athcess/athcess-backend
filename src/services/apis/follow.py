@@ -53,3 +53,8 @@ class FollowViewSet(viewsets.ViewSet):
         organization.save()
 
         return Response({'message': message, 'following': updated_following}, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, *args, **kwargs):
+        user = CustomUser.objects.get(username=request.user)
+        following_list = user.following.split(',') if user.following else []
+        return Response({'following': following_list}, status=status.HTTP_200_OK)
