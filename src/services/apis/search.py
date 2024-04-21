@@ -72,24 +72,18 @@ class SearchViewSet(viewsets.ModelViewSet):
         data = request.data.get('data', '')
 
         if type == 'athlete':
-            athletes_data = []
-
             athletes = CustomUser.objects.filter(
                 Q(first_name__icontains=data) | Q(last_name__icontains=data),
                 role='athlete'
             )
 
-            athlete_details = Athlete.objects.filter(username__in=athletes.values_list('username', flat=True))
-
-            for athlete in athletes:
-                athlete_data = {
-                    'username': athlete.username,
-                    'first_name': athlete.first_name,
-                    'last_name': athlete.last_name,
-                    **athlete_details.filter(username=athlete.username).values('age', 'hometown', 'position').first()
-                }
-
-                athletes_data.append(athlete_data)
+            athletes_data = [{
+                                 'username': athlete.username,
+                                 'first_name': athlete.first_name,
+                                 'last_name': athlete.last_name,
+                                 **(Athlete.objects.filter(username=athlete.username).values('age', 'hometown',
+                                                                                            'position').first() or {})
+            } for athlete in athletes]
 
             search = Search.objects.create(data=athletes_data)
             search_id = search.search_id
@@ -101,16 +95,13 @@ class SearchViewSet(viewsets.ModelViewSet):
             scouts = CustomUser.objects.filter(Q(first_name__icontains=data) | Q(last_name__icontains=data),
                                                role='scout')
 
-            scout_details = Scout.objects.filter(username__in=scouts.values_list('username', flat=True))
-
-            for scout in scouts:
-                scout_data = {
-                    'username': scout.username,
-                    'first_name': scout.first_name,
-                    'last_name': scout.last_name,
-                    **scout_details.filter(username=scout.username).values('hometown').first()
-                }
-                scouts_data.append(scout_data)
+            scouts_data = [{
+                'username': scout.username,
+                'first_name': scout.first_name,
+                'last_name': scout.last_name,
+                **(Athlete.objects.filter(username=scout.username).values('age', 'hometown',
+                                                                            'position').first() or {})
+            } for scout in scouts]
 
             search = Search.objects.create(data=scouts_data)
             search_id = search.search_id
