@@ -11,9 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-import os
-from dotenv import load_dotenv
-load_dotenv()
+from .config import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,15 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-e0*&5n8o4kq%#f5i6s5$cm()9*3v@$ry$4=)stj!4yv%ii*8%y"
 
-if os.getenv('BRANCH') == 'production':
+# SECURITY WARNING: don't run with debug turned on in production!
+if BRANCH == 'production':
     DEBUG = False
     ALLOWED_HOSTS = ['.vercel.app']
-elif os.getenv('BRANCH') == 'dev':
+elif BRANCH == 'dev':
     DEBUG = True
     ALLOWED_HOSTS = []
-else:
-    DEBUG = True
-    ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -162,9 +159,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-azure_account_name = os.environ.get('azure_account_name')
-azure_account_key = os.environ.get('azure_account_key')
-
+from Backend.config import azure_account_name, azure_account_key
 AZURE_CONFIG = {
     'account_name': azure_account_name,
     'account_key': azure_account_key,
