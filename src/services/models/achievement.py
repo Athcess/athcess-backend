@@ -13,6 +13,9 @@ class Achievement(models.Model):
 
     class Meta:
         db_table = "achievement"
-    
+        indexes = [
+            models.Index(fields=['achievement_id', 'username']),
+        ]
+
     def __str__(self):
         return str(self.achievement_id, self.username)
