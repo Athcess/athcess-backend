@@ -1,6 +1,7 @@
 from users.models.custom_user import CustomUser, Athlete, Scout, Admin_organization, Organization
 from ..models.post import Post
 from ..models.is_friend_of import IsFriendOf
+from ..models.blob_storage import BlobStorage
 from rest_framework import viewsets, status, permissions, serializers
 from rest_framework.response import Response
 from django.utils import timezone
@@ -84,4 +85,11 @@ class IsFriendOfViewSet(viewsets.ModelViewSet):
         for key, value in request.query_params.items():
             queryset = queryset.filter(**{key: value})
         serializer = IsFriendOfSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        friends = []
+        for i in serializer.data:
+            url = BlobStorage.objects.filter(username=i['friend_username'], is_profile_picture=True).values_list('url',
+                                                                                                                flat=True).first()
+            i['url'] = url
+            friends.append(i)
+
+        return Response(friends, status=status.HTTP_200_OK)
