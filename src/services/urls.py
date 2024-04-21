@@ -28,7 +28,7 @@ urlpatterns = [
     path('post/', PostViewSet.as_view({'post': 'create', 'get': 'list'}), name='post'),
     path('post/<int:pk>/', PostViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}),
          name='post-detail'),
-    path('follow/', FollowViewSet.as_view({'put': 'update'}), name='follow'),
+    path('follow/', FollowViewSet.as_view({'put': 'update', 'get': 'retrieve'}), name='follow'),
     path('repost/', RepostViewSet.as_view({'post': 'create'}), name='repost'),
     path('like/<int:pk>/', LikeViewSet.as_view({'post': 'like'}), name='like'),
     path('users/<str:pk>/', UserViewSet.as_view({'get': 'retrieve', 'put': 'partial_update'}), name='user-detail'),
