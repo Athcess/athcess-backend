@@ -35,7 +35,6 @@ class EventViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = {
-            'event_id': request.data.get('event_id'),
             'club': request.data.get('club'),
             'content': request.data.get('content'),
             'created_at': timezone.now(),
