@@ -115,10 +115,10 @@ class EventViewSet(viewsets.ModelViewSet):
         serializer = EventSerializer(events, many=True).data
 
         events = []
-        for i in serializer.data:
+        for i in serializer:
             try: url = BlobStorage.objects.filter(username=
                                              CustomUser.objects.get(
-                                                 username=Organization.objects.get(['club_id']).username),
+                                                 username=Organization.objects.get(club_name=i['club']).username.username.username),
                                              is_profile_picture=True).values_list('url',
                                                                                   flat=True).first()
             except:
