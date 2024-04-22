@@ -1,1 +1,498 @@
-[{"model": "users.customuser", "pk": "aa", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:04:55.317Z", "role": "scout", "password": "", "first_name": "a", "last_name": "a", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "bb", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:05:06.669Z", "role": "scout", "password": "", "first_name": "b", "last_name": "b", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "cc", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:05:23.182Z", "role": "scout", "password": "", "first_name": "c", "last_name": "c", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "chana", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:03:40.630Z", "role": "athlete", "password": "", "first_name": "Chanatip", "last_name": "S", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "cr7", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:02:38.324Z", "role": "athlete", "password": "", "first_name": "Cristiano", "last_name": "Ronaldo", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "dd", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:05:32.738Z", "role": "scout", "password": "", "first_name": "d", "last_name": "d", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "ee", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:06:17.906Z", "role": "admin", "password": "", "first_name": "e", "last_name": "e", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "enzo", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:04:16.281Z", "role": "athlete", "password": "", "first_name": "Enzo", "last_name": "Fernandes", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "ff", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:06:41.579Z", "role": "admin", "password": "", "first_name": "f", "last_name": "f", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "gg", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:07:51.852Z", "role": "admin", "password": "", "first_name": "g", "last_name": "g", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "hh", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:08:15.733Z", "role": "admin", "password": "", "first_name": "h", "last_name": "h", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "kai", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:03:19.425Z", "role": "athlete", "password": "", "first_name": "Kai", "last_name": "Havertz", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "messi", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:02:58.875Z", "role": "athlete", "password": "", "first_name": "Leo", "last_name": "Messi", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "purees", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:02:13.032Z", "role": "athlete", "password": "", "first_name": "Puree", "last_name": "Sriprom", "following": "Chelsea FC,Liverpool FC,Charmchuri FC,Arsenal FC", "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": "toni", "fields": {"last_login": null, "is_superuser": false, "email": "", "is_staff": false, "is_active": true, "date_joined": "2024-04-21T23:04:00.510Z", "role": "athlete", "password": "", "first_name": "Toni", "last_name": "Kroos", "following": "", "groups": [], "user_permissions": []}}, {"model": "users.athlete", "pk": "chana", "fields": {"age": 30, "position": "CM", "birth_date": "2002-10-12T00:00:00Z", "hometown": "Bangkok", "education": "B. Eng", "description": "hi", "club": null}}, {"model": "users.athlete", "pk": "cr7", "fields": {"age": 38, "position": "ST", "birth_date": "2002-10-12T00:00:00Z", "hometown": "Bangkok", "education": "B. Eng", "description": "hi", "club": null}}, {"model": "users.athlete", "pk": "enzo", "fields": {"age": 26, "position": "CM", "birth_date": "2002-10-12T00:00:00Z", "hometown": "Bangkok", "education": "B. Eng", "description": "hi", "club": null}}, {"model": "users.athlete", "pk": "kai", "fields": {"age": 26, "position": "CM", "birth_date": "2002-10-12T00:00:00Z", "hometown": "Bangkok", "education": "B. Eng", "description": "hi", "club": null}}, {"model": "users.athlete", "pk": "messi", "fields": {"age": 36, "position": "ST", "birth_date": "2002-10-12T00:00:00Z", "hometown": "Bangkok", "education": "B. Eng", "description": "hi", "club": null}}, {"model": "users.athlete", "pk": "purees", "fields": {"age": 21, "position": "ST", "birth_date": "2002-10-12T00:00:00Z", "hometown": "Bangkok", "education": "B. Eng", "description": "hi", "club": null}}, {"model": "users.athlete", "pk": "toni", "fields": {"age": 34, "position": "CM", "birth_date": "2002-10-12T00:00:00Z", "hometown": "Bangkok", "education": "B. Eng", "description": "hi", "club": null}}, {"model": "users.scout", "pk": 1, "fields": {"username": "aa", "tier": true, "birth_date": "2002-10-11T00:00:00Z", "hometown": "Bangkok", "age": 20, "club": null, "description": ""}}, {"model": "users.scout", "pk": 2, "fields": {"username": "bb", "tier": true, "birth_date": "2002-10-11T00:00:00Z", "hometown": "Bangkok", "age": 20, "club": null, "description": ""}}, {"model": "users.scout", "pk": 3, "fields": {"username": "cc", "tier": false, "birth_date": "2002-10-11T00:00:00Z", "hometown": "Bangkok", "age": 20, "club": null, "description": ""}}, {"model": "users.scout", "pk": 4, "fields": {"username": "dd", "tier": false, "birth_date": "2002-10-11T00:00:00Z", "hometown": "Bangkok", "age": 20, "club": null, "description": ""}}, {"model": "users.admin_organization", "pk": "ee", "fields": {"description": "hahaha"}}, {"model": "users.admin_organization", "pk": "ff", "fields": {"description": "hahaha"}}, {"model": "users.admin_organization", "pk": "gg", "fields": {"description": "hahaha"}}, {"model": "users.admin_organization", "pk": "hh", "fields": {"description": "hahaha"}}, {"model": "users.organization", "pk": "Arsenal FC", "fields": {"username": "hh", "location": "Bangkok, Thailand", "followers": "purees", "approved": false}}, {"model": "users.organization", "pk": "Charmchuri FC", "fields": {"username": "ee", "location": "Bangkok, Thailand", "followers": "purees", "approved": false}}, {"model": "users.organization", "pk": "Chelsea FC", "fields": {"username": "ff", "location": "Bangkok, Thailand", "followers": "purees", "approved": false}}, {"model": "users.organization", "pk": "Liverpool FC", "fields": {"username": "gg", "location": "Bangkok, Thailand", "followers": "purees", "approved": false}}]
+[
+  {
+    "model": "users.customuser",
+    "pk": "aa",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:04:55.317Z",
+      "role": "scout",
+      "password": "",
+      "first_name": "a",
+      "last_name": "a",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "bb",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:05:06.669Z",
+      "role": "scout",
+      "password": "",
+      "first_name": "b",
+      "last_name": "b",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "cc",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:05:23.182Z",
+      "role": "scout",
+      "password": "",
+      "first_name": "c",
+      "last_name": "c",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "chana",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:03:40.630Z",
+      "role": "athlete",
+      "password": "",
+      "first_name": "Chanatip",
+      "last_name": "S",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "cr7",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:02:38.324Z",
+      "role": "athlete",
+      "password": "",
+      "first_name": "Cristiano",
+      "last_name": "Ronaldo",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "dd",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:05:32.738Z",
+      "role": "scout",
+      "password": "",
+      "first_name": "d",
+      "last_name": "d",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "ee",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:06:17.906Z",
+      "role": "admin",
+      "password": "",
+      "first_name": "e",
+      "last_name": "e",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "enzo",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:04:16.281Z",
+      "role": "athlete",
+      "password": "",
+      "first_name": "Enzo",
+      "last_name": "Fernandes",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "ff",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:06:41.579Z",
+      "role": "admin",
+      "password": "",
+      "first_name": "f",
+      "last_name": "f",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "gg",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:07:51.852Z",
+      "role": "admin",
+      "password": "",
+      "first_name": "g",
+      "last_name": "g",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "hh",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:08:15.733Z",
+      "role": "admin",
+      "password": "",
+      "first_name": "h",
+      "last_name": "h",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "kai",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:03:19.425Z",
+      "role": "athlete",
+      "password": "",
+      "first_name": "Kai",
+      "last_name": "Havertz",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "messi",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:02:58.875Z",
+      "role": "athlete",
+      "password": "",
+      "first_name": "Leo",
+      "last_name": "Messi",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "purees",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:02:13.032Z",
+      "role": "athlete",
+      "password": "",
+      "first_name": "Puree",
+      "last_name": "Sriprom",
+      "following": "Chelsea FC,Liverpool FC,Charmchuri FC,Arsenal FC",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": "toni",
+    "fields": {
+      "last_login": null,
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-21T23:04:00.510Z",
+      "role": "athlete",
+      "password": "",
+      "first_name": "Toni",
+      "last_name": "Kroos",
+      "following": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.athlete",
+    "pk": "chana",
+    "fields": {
+      "age": 30,
+      "position": "CM",
+      "birth_date": "2002-10-12T00:00:00Z",
+      "hometown": "Bangkok",
+      "education": "B. Eng",
+      "description": "hi",
+      "club": null
+    }
+  },
+  {
+    "model": "users.athlete",
+    "pk": "cr7",
+    "fields": {
+      "age": 38,
+      "position": "ST",
+      "birth_date": "2002-10-12T00:00:00Z",
+      "hometown": "Bangkok",
+      "education": "B. Eng",
+      "description": "hi",
+      "club": null
+    }
+  },
+  {
+    "model": "users.athlete",
+    "pk": "enzo",
+    "fields": {
+      "age": 26,
+      "position": "CM",
+      "birth_date": "2002-10-12T00:00:00Z",
+      "hometown": "Bangkok",
+      "education": "B. Eng",
+      "description": "hi",
+      "club": null
+    }
+  },
+  {
+    "model": "users.athlete",
+    "pk": "kai",
+    "fields": {
+      "age": 26,
+      "position": "CM",
+      "birth_date": "2002-10-12T00:00:00Z",
+      "hometown": "Bangkok",
+      "education": "B. Eng",
+      "description": "hi",
+      "club": null
+    }
+  },
+  {
+    "model": "users.athlete",
+    "pk": "messi",
+    "fields": {
+      "age": 36,
+      "position": "ST",
+      "birth_date": "2002-10-12T00:00:00Z",
+      "hometown": "Bangkok",
+      "education": "B. Eng",
+      "description": "hi",
+      "club": null
+    }
+  },
+  {
+    "model": "users.athlete",
+    "pk": "purees",
+    "fields": {
+      "age": 21,
+      "position": "ST",
+      "birth_date": "2002-10-12T00:00:00Z",
+      "hometown": "Bangkok",
+      "education": "B. Eng",
+      "description": "hi",
+      "club": null
+    }
+  },
+  {
+    "model": "users.athlete",
+    "pk": "toni",
+    "fields": {
+      "age": 34,
+      "position": "CM",
+      "birth_date": "2002-10-12T00:00:00Z",
+      "hometown": "Bangkok",
+      "education": "B. Eng",
+      "description": "hi",
+      "club": null
+    }
+  },
+  {
+    "model": "users.scout",
+    "pk": 1,
+    "fields": {
+      "username": "aa",
+      "tier": true,
+      "birth_date": "2002-10-11T00:00:00Z",
+      "hometown": "Bangkok",
+      "age": 20,
+      "club": null,
+      "description": ""
+    }
+  },
+  {
+    "model": "users.scout",
+    "pk": 2,
+    "fields": {
+      "username": "bb",
+      "tier": true,
+      "birth_date": "2002-10-11T00:00:00Z",
+      "hometown": "Bangkok",
+      "age": 20,
+      "club": null,
+      "description": ""
+    }
+  },
+  {
+    "model": "users.scout",
+    "pk": 3,
+    "fields": {
+      "username": "cc",
+      "tier": false,
+      "birth_date": "2002-10-11T00:00:00Z",
+      "hometown": "Bangkok",
+      "age": 20,
+      "club": null,
+      "description": ""
+    }
+  },
+  {
+    "model": "users.scout",
+    "pk": 4,
+    "fields": {
+      "username": "dd",
+      "tier": false,
+      "birth_date": "2002-10-11T00:00:00Z",
+      "hometown": "Bangkok",
+      "age": 20,
+      "club": null,
+      "description": ""
+    }
+  },
+  {
+    "model": "users.admin_organization",
+    "pk": "ee",
+    "fields": {
+      "description": "hahaha"
+    }
+  },
+  {
+    "model": "users.admin_organization",
+    "pk": "ff",
+    "fields": {
+      "description": "hahaha"
+    }
+  },
+  {
+    "model": "users.admin_organization",
+    "pk": "gg",
+    "fields": {
+      "description": "hahaha"
+    }
+  },
+  {
+    "model": "users.admin_organization",
+    "pk": "hh",
+    "fields": {
+      "description": "hahaha"
+    }
+  },
+  {
+    "model": "users.organization",
+    "pk": "Arsenal FC",
+    "fields": {
+      "username": "hh",
+      "location": "Bangkok, Thailand",
+      "followers": "purees",
+      "approved": false
+    }
+  },
+  {
+    "model": "users.organization",
+    "pk": "Charmchuri FC",
+    "fields": {
+      "username": "ee",
+      "location": "Bangkok, Thailand",
+      "followers": "purees",
+      "approved": false
+    }
+  },
+  {
+    "model": "users.organization",
+    "pk": "Chelsea FC",
+    "fields": {
+      "username": "ff",
+      "location": "Bangkok, Thailand",
+      "followers": "purees",
+      "approved": false
+    }
+  },
+  {
+    "model": "users.organization",
+    "pk": "Liverpool FC",
+    "fields": {
+      "username": "gg",
+      "location": "Bangkok, Thailand",
+      "followers": "purees",
+      "approved": false
+    }
+  }
+]
