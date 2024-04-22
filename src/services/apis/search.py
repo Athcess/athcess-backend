@@ -119,7 +119,7 @@ class SearchViewSet(viewsets.ModelViewSet):
             response_organization = []
             for i in serializer.data:
                 url = BlobStorage.objects.filter(
-                    username=Organization.objects.get(club_name=i['club']).username.username,
+                    username=Organization.objects.get(club_name=i['club_name']).username.username,
                     is_profile_picture=True).values_list('url', flat=True).first()
                 i['url'] = url
                 response_organization.append(i)
